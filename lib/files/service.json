@@ -1,0 +1,52 @@
+{
+    "id": "rw_widget_v1",
+    "name": "RW Widget v1",
+    "urls": [
+      {
+        "url": "/widgets",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widgets"
+        }]
+      },
+      {
+        "url": "/widgets/:id",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widgets/:id"
+        }]
+      },
+      {
+        "url": "/widgets",
+        "method": "POST",
+        "endpoints": [{
+            "method": "POST",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widgets"
+        }]
+      },
+      {
+        "url": "/widgets/:id",
+        "method": "PUT",
+        "endpoints": [{
+            "method": "PUT",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widgets/:id"
+        }]
+      },
+      {
+        "url": "/widgets/:id",
+        "method": "DELETE",
+        "endpoints": [{
+            "method": "DELETE",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widgets/:id"
+        }]
+      }
+    ],
+    "swagger": null
+}
