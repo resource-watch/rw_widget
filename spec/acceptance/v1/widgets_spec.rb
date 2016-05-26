@@ -34,7 +34,7 @@ module V1
         }
 
         let!(:unpublished_widget) {
-          Widget.create!(name: 'Widget one unpublished', status: 1, published: false)
+          Widget.create!(name: 'Widget one unpublished', status: 1, published: false, verified: true)
         }
 
         it 'Show list of all widgets' do
@@ -79,6 +79,22 @@ module V1
           expect(status).to eq(200)
           expect(json.size).to            eq(3)
           expect(json[0]['published']).to eq(false)
+        end
+
+        it 'Show list of widgets with verified status false' do
+          get '/widgets?verified=false'
+
+          expect(status).to eq(200)
+          expect(json.size).to           eq(2)
+          expect(json[0]['verified']).to eq(false)
+        end
+
+        it 'Show list of widgets with verified status true' do
+          get '/widgets?verified=true'
+
+          expect(status).to eq(200)
+          expect(json.size).to           eq(2)
+          expect(json[0]['verified']).to eq(true)
         end
 
         it 'Show list of widgets' do

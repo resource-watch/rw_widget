@@ -44,6 +44,8 @@ class Widget < ApplicationRecord
   scope :filter_inactives,   -> { where(status: 3)              }
   scope :filter_published,   -> { where(published: true)        }
   scope :filter_unpublished, -> { where(published: false)       }
+  scope :filter_verified,    -> { where(verified: true)         }
+  scope :filter_unverified,  -> { where(verified: false)        }
   scope :filter_actives,     -> { filter_saved.filter_published }
 
   def status_txt
@@ -63,6 +65,7 @@ class Widget < ApplicationRecord
     def fetch_all(options)
       status    = options['status']    if options['status'].present?
       published = options['published'] if options['published'].present?
+      verified  = options['verified']  if options['verified'].present?
 
       widgets = recent
 
@@ -73,11 +76,13 @@ class Widget < ApplicationRecord
                 when 'disabled' then widgets.filter_inactives
                 when 'all'      then widgets
                 else
-                  published.present? ? widgets : widgets.filter_actives
+                  (published.present? || verified.present?) ? widgets : widgets.filter_actives
                 end
 
       widgets = widgets.filter_published   if published.present? && published.include?('true')
       widgets = widgets.filter_unpublished if published.present? && published.include?('false')
+      widgets = widgets.filter_verified    if verified.present?  && verified.include?('true')
+      widgets = widgets.filter_unverified  if verified.present?  && verified.include?('false')
 
       widgets
     end
