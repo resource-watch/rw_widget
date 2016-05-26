@@ -15,6 +15,9 @@
 #  published   :boolean          default(FALSE)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  verified    :boolean          default(FALSE)
+#  layer_id    :uuid
+#  dataset_id  :uuid
 #
 
 require 'rails_helper'
@@ -28,7 +31,7 @@ RSpec.describe Widget, type: :model do
 
   let!(:widgets) {
     widgets = []
-    widgets << Widget.create!(name: 'Widget data',     published: true, slug: 'first-test-widget', chart: chart, layers_attributes: [{ name: 'Layer first', settings: chart }, { name: 'Layer second' }])
+    widgets << Widget.create!(name: 'Widget data',     published: true, slug: 'first-test-widget', chart: chart)
     widgets << Widget.create!(name: 'Widget data two', description: 'Lorem ipsum...')
     widgets << Widget.create!(name: 'Widget data one', status: 1)
     widgets.each(&:reload)
@@ -42,8 +45,6 @@ RSpec.describe Widget, type: :model do
     expect(widget_first).to                be_valid
     expect(widget_first.slug).to           eq('first-test-widget')
     expect(widget_first.chart).to          be_present
-    expect(widget_first.layers[0]).to      be_valid
-    expect(widget_first.layers[1].name).to eq('Layer second')
   end
 
   it 'Generate slug after create' do

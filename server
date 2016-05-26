@@ -71,7 +71,7 @@ case "$1" in
              --url http://ec2-52-23-163-254.compute-1.amazonaws.com/gateway/service \
              --header 'cache-control: no-cache' \
              --header 'content-type: application/json' \
-             --data "$(cat lib/files/service.json)"
+             --data "$(cat lib/files/service_heroku.json)"
         ;;
     *)
         echo "Usage: server {start develop - production|stop|status|restart|register-service}" >&2

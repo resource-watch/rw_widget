@@ -50,7 +50,7 @@ module V1
       end
 
       def widget_type_filter
-        params.permit(:status, :published)
+        params.permit(:status, :published, :verified)
       end
 
       def widget_params

@@ -4,7 +4,7 @@
 # threads threads_count, threads_count
 
 # rackup DefaultRackup
-# port        ENV['PORT']     || 3015
+# port        ENV['PORT']     || 3020
 # environment ENV['RACK_ENV'] || 'development'
 
 # preload_app!
@@ -25,8 +25,10 @@ threads threads_count, threads_count
 
 preload_app!
 
+daemonize true
+
 rackup      DefaultRackup
-port        ENV['PORT']     || 3015
+port        ENV['PORT']     || 3020
 environment ENV['RACK_ENV'] || 'development'
 
 # # Set master PID and state locations

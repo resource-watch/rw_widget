@@ -15,13 +15,13 @@
 #  published   :boolean          default(FALSE)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  verified    :boolean          default(FALSE)
+#  layer_id    :uuid
+#  dataset_id  :uuid
 #
 
 class Widget < ApplicationRecord
   STATUS = %w(pending saved failed deleted).freeze
-
-  has_many :widgets_layers
-  has_many :layers, through: :widgets_layers
 
   before_update :assign_slug
 
@@ -29,13 +29,13 @@ class Widget < ApplicationRecord
     check_slug
   end
 
+  before_save :generate_dataset_id, if: 'query_url_changed? || dataset_id.blank?'
+
   validates :name, presence: true
   validates :slug, presence: true, format: { with: /\A[^\s!#$%^&*()（）=+;:'"\[\]\{\}|\\\/<>?,]+\z/,
                                              allow_blank: true,
                                              message: 'invalid. Slug must contain at least one letter and no special character' }
   validates_uniqueness_of :name, :slug
-
-  accepts_nested_attributes_for :layers
 
   scope :recent,             -> { order('updated_at DESC')      }
   scope :filter_pending,     -> { where(status: 0)              }
@@ -44,6 +44,8 @@ class Widget < ApplicationRecord
   scope :filter_inactives,   -> { where(status: 3)              }
   scope :filter_published,   -> { where(published: true)        }
   scope :filter_unpublished, -> { where(published: false)       }
+  scope :filter_verified,    -> { where(verified: true)         }
+  scope :filter_unverified,  -> { where(verified: false)        }
   scope :filter_actives,     -> { filter_saved.filter_published }
 
   def status_txt
@@ -52,10 +54,6 @@ class Widget < ApplicationRecord
 
   def deleted?
     status_txt == 'deleted'
-  end
-
-  def with_active_layers
-    layers.filter_actives
   end
 
   class << self
@@ -67,6 +65,7 @@ class Widget < ApplicationRecord
     def fetch_all(options)
       status    = options['status']    if options['status'].present?
       published = options['published'] if options['published'].present?
+      verified  = options['verified']  if options['verified'].present?
 
       widgets = recent
 
@@ -77,11 +76,13 @@ class Widget < ApplicationRecord
                 when 'disabled' then widgets.filter_inactives
                 when 'all'      then widgets
                 else
-                  published.present? ? widgets : widgets.filter_actives
+                  (published.present? || verified.present?) ? widgets : widgets.filter_actives
                 end
 
       widgets = widgets.filter_published   if published.present? && published.include?('true')
       widgets = widgets.filter_unpublished if published.present? && published.include?('false')
+      widgets = widgets.filter_verified    if verified.present?  && verified.include?('true')
+      widgets = widgets.filter_unverified  if verified.present?  && verified.include?('false')
 
       widgets
     end
@@ -95,5 +96,9 @@ class Widget < ApplicationRecord
 
     def assign_slug
       self.slug = self.slug.downcase.parameterize
+    end
+
+    def generate_dataset_id
+      self.dataset_id = URI.parse(self.query_url).path.split('/').last if self.query_url.present?
     end
 end

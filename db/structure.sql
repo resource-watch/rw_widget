@@ -74,24 +74,6 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
--- Name: layers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE layers (
-    id uuid DEFAULT uuid_generate_v4() NOT NULL,
-    provider integer DEFAULT 0,
-    name character varying NOT NULL,
-    color character varying,
-    settings jsonb DEFAULT '"{}"'::jsonb,
-    z_index integer DEFAULT 0,
-    status integer DEFAULT 0,
-    published boolean DEFAULT false,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -117,21 +99,10 @@ CREATE TABLE widgets (
     status integer DEFAULT 0,
     published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: widgets_layers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE widgets_layers (
-    id uuid DEFAULT uuid_generate_v4() NOT NULL,
-    widget_id uuid,
+    updated_at timestamp without time zone NOT NULL,
+    verified boolean DEFAULT false,
     layer_id uuid,
-    main boolean DEFAULT false,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    dataset_id uuid
 );
 
 
@@ -144,14 +115,6 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: layers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY layers
-    ADD CONSTRAINT layers_pkey PRIMARY KEY (id);
-
-
---
 -- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -160,61 +123,11 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: widgets_layers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY widgets_layers
-    ADD CONSTRAINT widgets_layers_pkey PRIMARY KEY (id);
-
-
---
 -- Name: widgets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY widgets
     ADD CONSTRAINT widgets_pkey PRIMARY KEY (id);
-
-
---
--- Name: index_layers_on_provider; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_layers_on_provider ON layers USING btree (provider);
-
-
---
--- Name: index_layers_on_published; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_layers_on_published ON layers USING btree (published);
-
-
---
--- Name: index_layers_on_settings; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_layers_on_settings ON layers USING gin (settings);
-
-
---
--- Name: index_layers_on_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_layers_on_status ON layers USING btree (status);
-
-
---
--- Name: index_widgets_layers_on_layer_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_widgets_layers_on_layer_id ON widgets_layers USING btree (layer_id);
-
-
---
--- Name: index_widgets_layers_on_widget_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_widgets_layers_on_widget_id ON widgets_layers USING btree (widget_id);
 
 
 --
@@ -244,6 +157,6 @@ CREATE INDEX index_widgets_on_status ON widgets USING btree (status);
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20160519085855'), ('20160519085906'), ('20160519141006'), ('20160519142335');
+INSERT INTO schema_migrations (version) VALUES ('20160519085855'), ('20160519085906'), ('20160519141006'), ('20160519142335'), ('20160526131454'), ('20160526133812');
 
 
