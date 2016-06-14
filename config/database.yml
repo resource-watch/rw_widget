@@ -52,9 +52,3 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-
-production:
-  <<: *default
-  database: rw_widget_production
-  username: <%= ENV['RESOURCE_WATCH_DATABASE_USER'] %>
-  password: <%= ENV['RESOURCE_WATCH_DATABASE_PASSWORD'] %>
