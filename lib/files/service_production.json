@@ -7,7 +7,7 @@
         "method": "GET",
         "endpoints": [{
             "method": "GET",
-            "baseUrl": "https://rw-widget.herokuapp.com",
+            "baseUrl": "http://localhost:3020",
             "path": "/widgets"
         }]
       },
@@ -16,7 +16,7 @@
         "method": "GET",
         "endpoints": [{
             "method": "GET",
-            "baseUrl": "https://rw-widget.herokuapp.com",
+            "baseUrl": "http://localhost:3020",
             "path": "/widgets/:id"
         }]
       },
@@ -25,7 +25,7 @@
         "method": "POST",
         "endpoints": [{
             "method": "POST",
-            "baseUrl": "https://rw-widget.herokuapp.com",
+            "baseUrl": "http://localhost:3020",
             "path": "/widgets"
         }]
       },
@@ -34,7 +34,7 @@
         "method": "PUT",
         "endpoints": [{
             "method": "PUT",
-            "baseUrl": "https://rw-widget.herokuapp.com",
+            "baseUrl": "http://localhost:3020",
             "path": "/widgets/:id"
         }]
       },
@@ -43,7 +43,7 @@
         "method": "DELETE",
         "endpoints": [{
             "method": "DELETE",
-            "baseUrl": "https://rw-widget.herokuapp.com",
+            "baseUrl": "http://localhost:3020",
             "path": "/widgets/:id"
         }]
       }
