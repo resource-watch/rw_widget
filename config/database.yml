@@ -56,5 +56,4 @@ test:
 production:
   <<: *default
   database: rw_widget_production
-  username: <%= ENV['RESOURCE_WATCH_DATABASE_USER'] %>
-  password: <%= ENV['RESOURCE_WATCH_DATABASE_PASSWORD'] %>
+  password: <%= ENV['POSTGRES_PASS'] %>

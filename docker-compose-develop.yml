@@ -1,0 +1,19 @@
+web:
+  build: .
+  command: develop
+  volumes:
+    - .:/rw_widget
+  ports:
+    - '3020:3020'
+  links:
+    - postgres
+    - redis
+  env_file: dev.env
+
+postgres:
+  image: postgres
+  container_name: postgres_rw_widget
+
+redis:
+  image: redis
+  container_name: redis_rw_widget
