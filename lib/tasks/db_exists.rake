@@ -1,6 +1,8 @@
 namespace :db do
   desc 'Check if db exists'
   task exists: :environment do
+    Rake::Task['db:drop'].invoke
+
     begin
       ActiveRecord::Base.connection
     rescue
