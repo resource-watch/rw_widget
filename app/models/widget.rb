@@ -50,9 +50,14 @@ class Widget < ApplicationRecord
   scope :filter_unpublished, -> { where(published: false)       }
   scope :filter_verified,    -> { where(verified: true)         }
   scope :filter_unverified,  -> { where(verified: false)        }
+  scope :filter_template,    -> { where(template: true)         }
+  scope :notfilter_template, -> { where(template: false)        }
+  scope :filter_default,     -> { where(default: true)          }
+  scope :notfilter_default,  -> { where(default: false)         }
   scope :filter_actives,     -> { filter_saved.filter_published }
 
-  scope :filter_apps, -> (app) { where('application ?| array[:keys]', keys: ["#{app}"]) }
+  scope :filter_apps,     -> (app)     { where('application ?| array[:keys]', keys: ["#{app}"]) }
+  scope :filter_dataset,  -> (dataset) { where(dataset_id: dataset)                             }
 
   def status_txt
     STATUS[status - 0]
@@ -73,6 +78,9 @@ class Widget < ApplicationRecord
       published = options['published']       if options['published'].present?
       verified  = options['verified']        if options['verified'].present?
       app       = options['app'].downcase    if options['app'].present?
+      template  = options['template']        if options['template'].present?
+      dataset   = options['dataset']         if options['dataset'].present?
+      default   = options['default']         if options['default'].present?
 
       widgets = recent
 
@@ -86,11 +94,16 @@ class Widget < ApplicationRecord
                   (published.present? || verified.present?) ? widgets : widgets.filter_actives
                 end
 
-      widgets = widgets.filter_published   if published.present? && published.include?('true')
-      widgets = widgets.filter_unpublished if published.present? && published.include?('false')
-      widgets = widgets.filter_verified    if verified.present?  && verified.include?('true')
-      widgets = widgets.filter_unverified  if verified.present?  && verified.include?('false')
-      widgets = app_filter(widgets, app)   if app.present?
+      widgets = widgets.filter_published        if published.present? && published.include?('true')
+      widgets = widgets.filter_unpublished      if published.present? && published.include?('false')
+      widgets = widgets.filter_verified         if verified.present?  && verified.include?('true')
+      widgets = widgets.filter_unverified       if verified.present?  && verified.include?('false')
+      widgets = app_filter(widgets, app)        if app.present?
+      widgets = widgets.filter_template         if template.present?  && template.include?('true')
+      widgets = widgets.notfilter_template      if template.present?  && template.include?('false')
+      widgets = widgets.filter_default          if default.present?   && default.include?('true')
+      widgets = widgets.notfilter_default       if default.present?   && default.include?('false')
+      widgets = widgets.filter_dataset(dataset) if dataset.present?
 
       widgets
     end
