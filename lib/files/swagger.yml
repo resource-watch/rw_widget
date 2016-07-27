@@ -205,7 +205,7 @@ definitions:
           query_url:
             type: string
             description: Url for data
-          chart:
+          widget_config:
             type: object
             description: Chart input
           layers_attributes:
@@ -296,7 +296,7 @@ definitions:
       query_url:
         type: string
         description: Url for data
-      chart:
+      widget_config:
         type: object
         description: Chart input
       layers:

@@ -2,28 +2,31 @@
 #
 # Table name: widgets
 #
-#  id          :uuid             not null, primary key
-#  name        :string           not null
-#  slug        :string
-#  description :text
-#  source      :string
-#  source_url  :string
-#  authors     :string
-#  query_url   :string
-#  chart       :jsonb
-#  status      :integer          default(0)
-#  published   :boolean          default(FALSE)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  verified    :boolean          default(FALSE)
-#  layer_id    :uuid
-#  dataset_id  :uuid
+#  id            :uuid             not null, primary key
+#  name          :string           not null
+#  slug          :string
+#  description   :text
+#  source        :string
+#  source_url    :string
+#  authors       :string
+#  query_url     :string
+#  widget_config :jsonb
+#  status        :integer          default(0)
+#  published     :boolean          default(FALSE)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  verified      :boolean          default(FALSE)
+#  layer_id      :uuid
+#  dataset_id    :uuid
+#  template      :boolean          default(FALSE)
+#  default       :boolean          default(FALSE)
+#  application   :jsonb
 #
 
 require 'rails_helper'
 
 RSpec.describe Widget, type: :model do
-  let!(:chart) {{"marks": {
+  let!(:widget_config) {{"marks": {
                   "type": "rect",
                   "from": {
                     "data": "table"
@@ -31,9 +34,9 @@ RSpec.describe Widget, type: :model do
 
   let!(:widgets) {
     widgets = []
-    widgets << Widget.create!(name: 'Widget data',     published: true, slug: 'first-test-widget', chart: chart)
-    widgets << Widget.create!(name: 'Widget data two', description: 'Lorem ipsum...')
-    widgets << Widget.create!(name: 'Widget data one', status: 1)
+    widgets << Widget.create!(name: 'Widget data',     status: 1, published: true, slug: 'first-test-widget', widget_config: widget_config, application: ['prep', 'gfw'])
+    widgets << Widget.create!(name: 'Widget data two', description: 'Lorem ipsum...', application: ['wrw'])
+    widgets << Widget.create!(name: 'Widget data one', status: 1, application: ['GFW'], published: true)
     widgets.each(&:reload)
   }
 
@@ -44,7 +47,7 @@ RSpec.describe Widget, type: :model do
   it 'Is valid' do
     expect(widget_first).to                be_valid
     expect(widget_first.slug).to           eq('first-test-widget')
-    expect(widget_first.chart).to          be_present
+    expect(widget_first.widget_config).to          be_present
   end
 
   it 'Generate slug after create' do

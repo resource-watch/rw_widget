@@ -14,7 +14,7 @@ module V1
       let!(:params_faild) {{"widget": { "name": "Widget second one" }}}
 
       let!(:widget) {
-        Widget.create!(name: 'Widget second one')
+        Widget.create!(name: 'Widget second one', application: ['gfw'])
       }
 
       let!(:widget_id)   { widget.id   }
@@ -30,7 +30,7 @@ module V1
         }
 
         let!(:enabled_widget) {
-          Widget.create!(name: 'Widget one', status: 1, published: true, verified: true)
+          Widget.create!(name: 'Widget one', status: 1, published: true, verified: true, application: ['Gfw', 'wrw'])
         }
 
         let!(:unpublished_widget) {
@@ -95,6 +95,34 @@ module V1
           expect(status).to eq(200)
           expect(json.size).to           eq(2)
           expect(json[0]['verified']).to eq(true)
+        end
+
+        it 'Show list of widgets for app GFW' do
+          get '/widgets?app=GFw'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(1)
+        end
+
+        it 'Show list of widgets for app WRW' do
+          get '/widgets?app=wrw'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(1)
+        end
+
+        it 'Show blank list of widgets for not existing app' do
+          get '/widgets?app=notexisting'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(0)
+        end
+
+        it 'Show blank list of widgets for not existing app' do
+          get '/widgets?app=all'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(1)
         end
 
         it 'Show list of widgets' do
