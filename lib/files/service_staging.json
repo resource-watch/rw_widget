@@ -342,7 +342,7 @@
                   "type": "string",
                   "description": "Url for data"
                 },
-                "chart": {
+                "widget_config": {
                   "type": "object",
                   "description": "Chart input"
                 },
@@ -463,7 +463,7 @@
               "type": "string",
               "description": "Url for data"
             },
-            "chart": {
+            "widget_config": {
               "type": "object",
               "description": "Chart input"
             },
