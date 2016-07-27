@@ -24,7 +24,7 @@
 #
 
 class WidgetSerializer < ActiveModel::Serializer
-  attributes :id, :application, :slug, :name, :description, :source, :source_url, :layer_id, :dataset_id, :authors, :query_url, :widget_config, :meta
+  attributes :id, :application, :slug, :name, :description, :source, :source_url, :layer_id, :dataset_id, :authors, :query_url, :widget_config, :template, :default, :meta
 
   def widget_config
     object.widget_config == '{}' ? nil : object.widget_config
