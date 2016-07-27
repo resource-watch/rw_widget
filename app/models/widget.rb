@@ -2,27 +2,31 @@
 #
 # Table name: widgets
 #
-#  id          :uuid             not null, primary key
-#  name        :string           not null
-#  slug        :string
-#  description :text
-#  source      :string
-#  source_url  :string
-#  authors     :string
-#  query_url   :string
-#  chart       :jsonb
-#  status      :integer          default(0)
-#  published   :boolean          default(FALSE)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  verified    :boolean          default(FALSE)
-#  layer_id    :uuid
-#  dataset_id  :uuid
+#  id            :uuid             not null, primary key
+#  name          :string           not null
+#  slug          :string
+#  description   :text
+#  source        :string
+#  source_url    :string
+#  authors       :string
+#  query_url     :string
+#  widget_config :jsonb
+#  status        :integer          default(0)
+#  published     :boolean          default(FALSE)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  verified      :boolean          default(FALSE)
+#  layer_id      :uuid
+#  dataset_id    :uuid
+#  template      :boolean          default(FALSE)
+#  default       :boolean          default(FALSE)
+#  application   :jsonb
 #
 
 class Widget < ApplicationRecord
   STATUS = %w(pending saved failed deleted).freeze
 
+  before_save   :merge_apps, if: "application_changed?"
   before_update :assign_slug
 
   before_validation(on: [:create, :update]) do
@@ -48,6 +52,8 @@ class Widget < ApplicationRecord
   scope :filter_unverified,  -> { where(verified: false)        }
   scope :filter_actives,     -> { filter_saved.filter_published }
 
+  scope :filter_apps, -> (app) { where('application ?| array[:keys]', keys: ["#{app}"]) }
+
   def status_txt
     STATUS[status - 0]
   end
@@ -63,9 +69,10 @@ class Widget < ApplicationRecord
     end
 
     def fetch_all(options)
-      status    = options['status']    if options['status'].present?
-      published = options['published'] if options['published'].present?
-      verified  = options['verified']  if options['verified'].present?
+      status    = options['status'].downcase if options['status'].present?
+      published = options['published']       if options['published'].present?
+      verified  = options['verified']        if options['verified'].present?
+      app       = options['app'].downcase    if options['app'].present?
 
       widgets = recent
 
@@ -83,12 +90,28 @@ class Widget < ApplicationRecord
       widgets = widgets.filter_unpublished if published.present? && published.include?('false')
       widgets = widgets.filter_verified    if verified.present?  && verified.include?('true')
       widgets = widgets.filter_unverified  if verified.present?  && verified.include?('false')
+      widgets = app_filter(widgets, app)   if app.present?
+
+      widgets
+    end
+
+    def app_filter(scope, app)
+      widgets = scope
+      widgets = if app.present? && !app.include?('all')
+                  widgets.filter_apps(app)
+                else
+                  widgets
+                end
 
       widgets
     end
   end
 
   private
+
+    def merge_apps
+      self.application = self.application.each { |a| a.downcase! }.uniq
+    end
 
     def check_slug
       self.slug = self.name.downcase.parameterize if self.name.present? && self.slug.blank?

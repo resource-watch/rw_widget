@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616104921) do
+ActiveRecord::Schema.define(version: 20160727113446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,24 +28,27 @@ ActiveRecord::Schema.define(version: 20160616104921) do
   end
 
   create_table "widgets", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string   "name",                        null: false
+    t.string   "name",                          null: false
     t.string   "slug"
     t.text     "description"
     t.string   "source"
     t.string   "source_url"
     t.string   "authors"
     t.string   "query_url"
-    t.jsonb    "chart",       default: "{}"
-    t.integer  "status",      default: 0
-    t.boolean  "published",   default: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.boolean  "verified",    default: false
+    t.jsonb    "widget_config", default: "{}"
+    t.integer  "status",        default: 0
+    t.boolean  "published",     default: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.boolean  "verified",      default: false
     t.uuid     "layer_id"
     t.uuid     "dataset_id"
-    t.index ["chart"], name: "index_widgets_on_chart", using: :gin
+    t.boolean  "template",      default: false
+    t.boolean  "default",       default: false
+    t.jsonb    "application",   default: []
     t.index ["published"], name: "index_widgets_on_published", using: :btree
     t.index ["status"], name: "index_widgets_on_status", using: :btree
+    t.index ["widget_config"], name: "index_widgets_on_widget_config", using: :gin
   end
 
 end
