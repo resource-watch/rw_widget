@@ -30,7 +30,11 @@ module V1
         }
 
         let!(:enabled_widget) {
-          Widget.create!(name: 'Widget one', status: 1, published: true, verified: true, application: ['Gfw', 'wrw'])
+          Widget.create!(name: 'Widget one', status: 1, published: true, verified: true, application: ['Gfw', 'wrw'], dataset_id: 'c547146d-de0c-47ff-a406-5125667fd5e6', default: true)
+        }
+
+        let!(:enabled_widget_2) {
+          Widget.create!(name: 'Widget one two', status: 1, published: true, verified: true, application: ['Gfw'], dataset_id: 'c547146d-de0c-47ff-a406-5125667fd5e7', template: true)
         }
 
         let!(:unpublished_widget) {
@@ -40,28 +44,28 @@ module V1
         it 'Show list of all widgets' do
           get '/widgets?status=all'
 
-          expect(status).to eq(200)
-          expect(json.size).to eq(4)
+          expect(status).to    eq(200)
+          expect(json.size).to eq(5)
         end
 
         it 'Show list of widgets with pending status' do
           get '/widgets?status=pending'
 
-          expect(status).to eq(200)
+          expect(status).to    eq(200)
           expect(json.size).to eq(1)
         end
 
         it 'Show list of widgets with active status' do
           get '/widgets?status=active'
 
-          expect(status).to eq(200)
-          expect(json.size).to eq(1)
+          expect(status).to    eq(200)
+          expect(json.size).to eq(2)
         end
 
         it 'Show list of widgets with disabled status' do
           get '/widgets?status=disabled'
 
-          expect(status).to eq(200)
+          expect(status).to    eq(200)
           expect(json.size).to eq(1)
         end
 
@@ -69,7 +73,7 @@ module V1
           get '/widgets?published=true'
 
           expect(status).to eq(200)
-          expect(json.size).to            eq(1)
+          expect(json.size).to            eq(2)
           expect(json[0]['published']).to eq(true)
         end
 
@@ -93,7 +97,7 @@ module V1
           get '/widgets?verified=true'
 
           expect(status).to eq(200)
-          expect(json.size).to           eq(2)
+          expect(json.size).to           eq(3)
           expect(json[0]['verified']).to eq(true)
         end
 
@@ -101,7 +105,7 @@ module V1
           get '/widgets?app=GFw'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(1)
+          expect(json.size).to eq(2)
         end
 
         it 'Show list of widgets for app WRW' do
@@ -122,14 +126,53 @@ module V1
           get '/widgets?app=all'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(1)
+          expect(json.size).to eq(2)
+        end
+
+        it 'Show list of widgets with template true' do
+          get '/widgets?template=true'
+
+          expect(status).to eq(200)
+          expect(json.size).to           eq(1)
+          expect(json[0]['template']).to eq(true)
+        end
+
+        it 'Show list of widgets with default true' do
+          get '/widgets?default=true'
+
+          expect(status).to eq(200)
+          expect(json.size).to           eq(1)
+          expect(json[0]['default']).to eq(true)
+        end
+
+        it 'Show list of widgets with default false' do
+          get '/widgets?default=false'
+
+          expect(status).to eq(200)
+          expect(json.size).to           eq(1)
+          expect(json[0]['default']).to eq(false)
+        end
+
+        it 'Show list of widgets for a specific dataset' do
+          get '/widgets?dataset=c547146d-de0c-47ff-a406-5125667fd5e7'
+
+          expect(status).to eq(200)
+          expect(json.size).to             eq(1)
+          expect(json[0]['dataset_id']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
+        end
+
+        it 'Show blank list of widgets for a non existing dataset' do
+          get '/widgets?dataset=c547146d-de0c-47ff-a406-5125667fd5e9'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(0)
         end
 
         it 'Show list of widgets' do
           get '/widgets'
 
           expect(status).to    eq(200)
-          expect(json.size).to eq(1)
+          expect(json.size).to eq(2)
         end
       end
 
