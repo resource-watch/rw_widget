@@ -1,6 +1,7 @@
 {
     "id": "rw_widget_v1",
     "name": "RW Widget v1",
+    "tags": ["rw"],
     "urls": [
       {
         "url": "/widgets",
