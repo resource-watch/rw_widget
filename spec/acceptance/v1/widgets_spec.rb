@@ -73,32 +73,32 @@ module V1
           get '/widgets?published=true'
 
           expect(status).to eq(200)
-          expect(json.size).to            eq(2)
-          expect(json[0]['published']).to eq(true)
+          expect(json.size).to                          eq(2)
+          expect(json[0]['attributes']['published']).to eq(true)
         end
 
         it 'Show list of widgets with published status false' do
           get '/widgets?published=false'
 
           expect(status).to eq(200)
-          expect(json.size).to            eq(3)
-          expect(json[0]['published']).to eq(false)
+          expect(json.size).to                          eq(3)
+          expect(json[0]['attributes']['published']).to eq(false)
         end
 
         it 'Show list of widgets with verified status false' do
           get '/widgets?verified=false'
 
           expect(status).to eq(200)
-          expect(json.size).to           eq(2)
-          expect(json[0]['verified']).to eq(false)
+          expect(json.size).to                         eq(2)
+          expect(json[0]['attributes']['verified']).to eq(false)
         end
 
         it 'Show list of widgets with verified status true' do
           get '/widgets?verified=true'
 
           expect(status).to eq(200)
-          expect(json.size).to           eq(3)
-          expect(json[0]['verified']).to eq(true)
+          expect(json.size).to                         eq(3)
+          expect(json[0]['attributes']['verified']).to eq(true)
         end
 
         it 'Show list of widgets for app GFW' do
@@ -133,32 +133,32 @@ module V1
           get '/widgets?template=true'
 
           expect(status).to eq(200)
-          expect(json.size).to           eq(1)
-          expect(json[0]['template']).to eq(true)
+          expect(json.size).to                         eq(1)
+          expect(json[0]['attributes']['template']).to eq(true)
         end
 
         it 'Show list of widgets with default true' do
           get '/widgets?default=true'
 
           expect(status).to eq(200)
-          expect(json.size).to           eq(1)
-          expect(json[0]['default']).to eq(true)
+          expect(json.size).to                        eq(1)
+          expect(json[0]['attributes']['default']).to eq(true)
         end
 
         it 'Show list of widgets with default false' do
           get '/widgets?default=false'
 
           expect(status).to eq(200)
-          expect(json.size).to           eq(1)
-          expect(json[0]['default']).to eq(false)
+          expect(json.size).to                        eq(1)
+          expect(json[0]['attributes']['default']).to eq(false)
         end
 
         it 'Show list of widgets for a specific dataset' do
           get '/widgets?dataset=c547146d-de0c-47ff-a406-5125667fd5e7'
 
           expect(status).to eq(200)
-          expect(json.size).to             eq(1)
-          expect(json[0]['dataset_id']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
+          expect(json.size).to                           eq(1)
+          expect(json[0]['attributes']['datasetId']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
         end
 
         it 'Show blank list of widgets for a non existing dataset' do
@@ -180,8 +180,8 @@ module V1
         get "/widgets/#{widget_slug}"
 
         expect(status).to eq(200)
-        expect(json['slug']).to           eq('widget-second-one')
-        expect(json['meta']['status']).to eq('pending')
+        expect(json['attributes']['slug']).to  eq('widget-second-one')
+        expect(json_main['meta']['status']).to eq('pending')
       end
 
       it 'Show widget by id' do
@@ -194,32 +194,32 @@ module V1
         post '/widgets', params: params
 
         expect(status).to eq(201)
-        expect(json['id']).to   be_present
-        expect(json['slug']).to eq('first-test-widget')
+        expect(json['id']).to                 be_present
+        expect(json['attributes']['slug']).to eq('first-test-widget')
       end
 
       it 'Name and slug validation' do
         post '/widgets', params: params_faild
 
         expect(status).to eq(422)
-        expect(json['message']['name']).to eq(['has already been taken'])
-        expect(json['message']['slug']).to eq(['has already been taken'])
+        expect(json_main['message']['name']).to eq(['has already been taken'])
+        expect(json_main['message']['slug']).to eq(['has already been taken'])
       end
 
       it 'Allows to update widget' do
         put "/widgets/#{widget_slug}", params: update_params
 
         expect(status).to eq(200)
-        expect(json['id']).to   be_present
-        expect(json['name']).to eq('First test one update')
-        expect(json['slug']).to eq('updated-first-test-widget')
+        expect(json['id']).to                 be_present
+        expect(json['attributes']['name']).to eq('First test one update')
+        expect(json['attributes']['slug']).to eq('updated-first-test-widget')
       end
 
       it 'Allows to delete widget by id' do
         delete "/widgets/#{widget_id}"
 
         expect(status).to eq(200)
-        expect(json['message']).to             eq('Widget deleted')
+        expect(json_main['message']).to        eq('Widget deleted')
         expect(Widget.where(id: widget_id)).to be_empty
       end
 
@@ -227,7 +227,7 @@ module V1
         delete "/widgets/#{widget_slug}"
 
         expect(status).to eq(200)
-        expect(json['message']).to                 eq('Widget deleted')
+        expect(json_main['message']).to                 eq('Widget deleted')
         expect(Widget.where(slug: widget_slug)).to be_empty
       end
 
@@ -243,10 +243,10 @@ module V1
           get "/widgets/#{widget_last_id}"
 
           expect(status).to eq(200)
-          expect(json['slug']).to             eq('widget-last')
-          expect(json['layer_id']).to         eq('c547146d-de0c-47ff-a406-5125667fd5e1')
-          expect(json['dataset_id']).to       eq('c547146d-de0c-47ff-a406-5125667fd599')
-          expect(json['meta']['verified']).to eq(true)
+          expect(json['attributes']['slug']).to      eq('widget-last')
+          expect(json['attributes']['layerId']).to   eq('c547146d-de0c-47ff-a406-5125667fd5e1')
+          expect(json['attributes']['datasetId']).to eq('c547146d-de0c-47ff-a406-5125667fd599')
+          expect(json_main['meta']['verified']).to   eq(true)
         end
       end
     end

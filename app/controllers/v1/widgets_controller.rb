@@ -9,7 +9,11 @@ module V1
     end
 
     def show
-      render json: @widget, serializer: WidgetSerializer, root: false
+      render json: @widget, serializer: WidgetSerializer, root: false, meta: { status: @widget.try(:status_txt),
+                                                                               published: @widget.try(:published),
+                                                                               verified: @widget.try(:verified),
+                                                                               updated_at: @widget.try(:updated_at),
+                                                                               created_at: @widget.try(:created_at) }
     end
 
     def update
