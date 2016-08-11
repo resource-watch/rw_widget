@@ -24,19 +24,9 @@
 #
 
 class WidgetSerializer < ActiveModel::Serializer
-  attributes :id, :application, :slug, :name, :description, :source, :source_url, :layer_id, :dataset_id, :authors, :query_url, :widget_config, :template, :default, :meta
+  attributes :id, :application, :slug, :name, :description, :source, :source_url, :layer_id, :dataset_id, :authors, :query_url, :widget_config, :template, :default
 
   def widget_config
     object.widget_config == '{}' ? nil : object.widget_config
-  end
-
-  def meta
-    data = {}
-    data['status']     = object.try(:status_txt)
-    data['published']  = object.try(:published)
-    data['verified']   = object.try(:verified)
-    data['updated_at'] = object.try(:updated_at)
-    data['created_at'] = object.try(:created_at)
-    data
   end
 end
