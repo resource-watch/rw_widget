@@ -28,6 +28,9 @@ paths:
           in: query
           description: Filter widgets on published status (true, false)
           type: string
+        - name: app
+          in: query
+          description: Filter widgets on application (prep, gfw, etc..)
       responses:
         200:
           description: Widgets obtained
