@@ -20,10 +20,4 @@ class ApplicationController < ActionController::API
         raise e
       end
     end
-
-    def basic_auth
-      authenticate_or_request_with_http_basic('Administration') do |user, password|
-        ENV['ACCESS_USER'] == user && ENV['ACCESS_PASSWORD'] == password
-      end if ENV['ACCESS'].present? && ENV['ACCESS'].include?('private')
-    end
 end
