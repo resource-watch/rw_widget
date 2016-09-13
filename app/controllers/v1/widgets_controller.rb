@@ -60,6 +60,7 @@ module V1
 
       def set_widget
         @widget = Widget.find_by_id_or_slug(params[:id])
+        record_not_found if @widget.blank?
       end
 
       def widget_type_filter
