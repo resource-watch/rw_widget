@@ -1,15 +1,15 @@
 class ApplicationController < ActionController::API
-  include ActionController::HttpAuthentication::Basic::ControllerMethods
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   rescue_from Exception do |e|
     error(e)
   end
 
-  def routing_error
-    raise ActionController::RoutingError.new(params[:path])
-  end
-
   protected
+
+    def record_not_found
+      render json: { errors: [{ status: '404', title: 'Record not found' }] } ,  status: 404
+    end
 
     def error(e)
       if request.env["ORIGINAL_FULLPATH"] =~ /^\//
