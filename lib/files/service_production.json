@@ -24,6 +24,7 @@
       {
         "url": "/widgets",
         "method": "POST",
+        "authenticated": true,
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://localhost:3020",
@@ -33,6 +34,7 @@
       {
         "url": "/widgets/:id",
         "method": "PUT",
+        "authenticated": true,
         "endpoints": [{
             "method": "PUT",
             "baseUrl": "http://localhost:3020",
@@ -42,6 +44,7 @@
       {
         "url": "/widgets/:id",
         "method": "DELETE",
+        "authenticated": true,
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://localhost:3020",
