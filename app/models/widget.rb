@@ -56,8 +56,8 @@ class Widget < ApplicationRecord
   scope :notfilter_default,  -> { where(default: false)         }
   scope :filter_actives,     -> { filter_saved.filter_published }
 
-  scope :filter_apps,     -> (app)     { where('application ?| array[:keys]', keys: ["#{app}"]) }
-  scope :filter_dataset,  -> (dataset) { where(dataset_id: dataset)                             }
+  scope :filter_apps,     ->(app)     { where('application ?| array[:keys]', keys: ["#{app}"]) }
+  scope :filter_dataset,  ->(dataset) { where(dataset_id: dataset)                             }
 
   def status_txt
     STATUS[status - 0]
@@ -68,7 +68,7 @@ class Widget < ApplicationRecord
   end
 
   class << self
-    def find_by_id_or_slug(param)
+    def set_by_id_or_slug(param)
       widget_id = where(slug: param).or(where(id: param)).pluck(:id).min
       find(widget_id) rescue nil
     end
@@ -91,7 +91,7 @@ class Widget < ApplicationRecord
                 when 'disabled' then widgets.filter_inactives
                 when 'all'      then widgets
                 else
-                  (published.present? || verified.present?) ? widgets : widgets.filter_actives
+                  published.present? || verified.present? ? widgets : widgets.filter_actives
                 end
 
       widgets = widgets.filter_published        if published.present? && published.include?('true')

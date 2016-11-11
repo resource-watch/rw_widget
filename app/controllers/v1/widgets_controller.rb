@@ -67,7 +67,7 @@ module V1
     private
 
       def set_widget
-        @widget = Widget.find_by_id_or_slug(params[:id])
+        @widget = Widget.set_by_id_or_slug(params[:id])
         record_not_found if @widget.blank?
       end
 
