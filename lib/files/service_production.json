@@ -4,51 +4,51 @@
     "tags": ["rw"],
     "urls": [
       {
-        "url": "/widgets",
+        "url": "/widget",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets"
+            "path": "/widget"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/:id",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
         }]
       },
       {
-        "url": "/widgets",
+        "url": "/widget",
         "method": "POST",
         "authenticated": true,
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets"
+            "path": "/widget"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/:id",
         "method": "PUT",
         "authenticated": true,
         "endpoints": [{
             "method": "PUT",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/:id",
         "method": "DELETE",
         "authenticated": true,
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
         }]
       }
     ],
@@ -67,7 +67,7 @@
         "application/json"
       ],
       "paths": {
-        "/widgets": {
+        "/widget": {
           "get": {
             "description": "Returns all widgets",
             "produces": [
@@ -164,7 +164,7 @@
             }
           }
         },
-        "/widgets/{id}": {
+        "/widget/{id}": {
           "get": {
             "description": "Returns widget based on a single UUID or slud, if the geostore not exist return 404",
             "produces": [
