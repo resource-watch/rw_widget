@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module V1
   class WidgetsController < ApplicationController
     before_action :set_widget, only: [:show, :update, :destroy]
