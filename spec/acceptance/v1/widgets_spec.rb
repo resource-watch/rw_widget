@@ -157,12 +157,27 @@ module V1
           get '/widget?dataset=c547146d-de0c-47ff-a406-5125667fd5e7'
 
           expect(status).to eq(200)
-          expect(json.size).to                           eq(1)
+          expect(json.size).to                          eq(1)
           expect(json[0]['attributes']['datasetId']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
         end
 
         it 'Show blank list of widgets for a non existing dataset' do
           get '/widget?dataset=c547146d-de0c-47ff-a406-5125667fd5e9'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(0)
+        end
+
+        it 'Show list of widgets for a specific dataset usig url' do
+          get '/dataset/c547146d-de0c-47ff-a406-5125667fd5e7/widget'
+
+          expect(status).to eq(200)
+          expect(json.size).to                          eq(1)
+          expect(json[0]['attributes']['datasetId']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
+        end
+
+        it 'Show blank list of widgets for a non existing dataset usig url' do
+          get '/dataset/c547146d-de0c-47ff-a406-5125667fd5e9/widget'
 
           expect(status).to eq(200)
           expect(json.size).to eq(0)
