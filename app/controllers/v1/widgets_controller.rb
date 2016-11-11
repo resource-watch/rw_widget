@@ -4,20 +4,24 @@ module V1
 
     def index
       @widgets = Widget.fetch_all(widget_type_filter)
-      render json: @widgets, each_serializer: WidgetArraySerializer, root: false
+      render json: @widgets, each_serializer: WidgetSerializer, meta: { widgets_count: @widgets.size }
     end
 
     def show
-      render json: @widget, serializer: WidgetSerializer, root: false, meta: { status: @widget.try(:status_txt),
-                                                                               published: @widget.try(:published),
-                                                                               verified: @widget.try(:verified),
-                                                                               updated_at: @widget.try(:updated_at),
-                                                                               created_at: @widget.try(:created_at) }
+      render json: @widget, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
+                                                                  published: @widget.try(:published),
+                                                                  verified: @widget.try(:verified),
+                                                                  updated_at: @widget.try(:updated_at),
+                                                                  created_at: @widget.try(:created_at) }
     end
 
     def update
       if @widget.update(widget_params)
-        render json: @widget, status: 200, serializer: WidgetSerializer, root: false
+        render json: @widget, status: 200, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
+                                                                                 published: @widget.try(:published),
+                                                                                 verified: @widget.try(:verified),
+                                                                                 updated_at: @widget.try(:updated_at),
+                                                                                 created_at: @widget.try(:created_at) }
       else
         render json: { success: false, message: @widget.errors }, status: 422
       end
@@ -26,7 +30,11 @@ module V1
     def create
       @widget = Widget.new(widget_params)
       if @widget.save
-        render json: @widget, status: 201, serializer: WidgetSerializer, root: false
+        render json: @widget, status: 201, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
+                                                                                 published: @widget.try(:published),
+                                                                                 verified: @widget.try(:verified),
+                                                                                 updated_at: @widget.try(:updated_at),
+                                                                                 created_at: @widget.try(:created_at) }
       else
         render json: { success: false, message: @widget.errors }, status: 422
       end

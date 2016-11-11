@@ -3,48 +3,48 @@
     "name": "RW Widget v1",
     "urls": [
       {
-        "url": "/widgets",
+        "url": "/widget",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets"
+            "path": "/widget"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/:id",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
         }]
       },
       {
-        "url": "/widgets",
+        "url": "/widget",
         "method": "POST",
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets"
+            "path": "/widget"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/:id",
         "method": "PUT",
         "endpoints": [{
             "method": "PUT",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/:id",
         "method": "DELETE",
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
         }]
       }
     ],

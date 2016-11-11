@@ -42,35 +42,35 @@ module V1
         }
 
         it 'Show list of all widgets' do
-          get '/widgets?status=all'
+          get '/widget?status=all'
 
           expect(status).to    eq(200)
           expect(json.size).to eq(5)
         end
 
         it 'Show list of widgets with pending status' do
-          get '/widgets?status=pending'
+          get '/widget?status=pending'
 
           expect(status).to    eq(200)
           expect(json.size).to eq(1)
         end
 
         it 'Show list of widgets with active status' do
-          get '/widgets?status=active'
+          get '/widget?status=active'
 
           expect(status).to    eq(200)
           expect(json.size).to eq(2)
         end
 
         it 'Show list of widgets with disabled status' do
-          get '/widgets?status=disabled'
+          get '/widget?status=disabled'
 
           expect(status).to    eq(200)
           expect(json.size).to eq(1)
         end
 
         it 'Show list of widgets with published status true' do
-          get '/widgets?published=true'
+          get '/widget?published=true'
 
           expect(status).to eq(200)
           expect(json.size).to                          eq(2)
@@ -78,7 +78,7 @@ module V1
         end
 
         it 'Show list of widgets with published status false' do
-          get '/widgets?published=false'
+          get '/widget?published=false'
 
           expect(status).to eq(200)
           expect(json.size).to                          eq(3)
@@ -86,7 +86,7 @@ module V1
         end
 
         it 'Show list of widgets with verified status false' do
-          get '/widgets?verified=false'
+          get '/widget?verified=false'
 
           expect(status).to eq(200)
           expect(json.size).to                         eq(2)
@@ -94,7 +94,7 @@ module V1
         end
 
         it 'Show list of widgets with verified status true' do
-          get '/widgets?verified=true'
+          get '/widget?verified=true'
 
           expect(status).to eq(200)
           expect(json.size).to                         eq(3)
@@ -102,35 +102,35 @@ module V1
         end
 
         it 'Show list of widgets for app GFW' do
-          get '/widgets?app=GFw'
+          get '/widget?app=GFw'
 
           expect(status).to eq(200)
           expect(json.size).to eq(2)
         end
 
         it 'Show list of widgets for app WRW' do
-          get '/widgets?app=wrw'
+          get '/widget?app=wrw'
 
           expect(status).to eq(200)
           expect(json.size).to eq(1)
         end
 
         it 'Show blank list of widgets for not existing app' do
-          get '/widgets?app=notexisting'
+          get '/widget?app=notexisting'
 
           expect(status).to eq(200)
           expect(json.size).to eq(0)
         end
 
         it 'Show blank list of widgets for not existing app' do
-          get '/widgets?app=all'
+          get '/widget?app=all'
 
           expect(status).to eq(200)
           expect(json.size).to eq(2)
         end
 
         it 'Show list of widgets with template true' do
-          get '/widgets?template=true'
+          get '/widget?template=true'
 
           expect(status).to eq(200)
           expect(json.size).to                         eq(1)
@@ -138,7 +138,7 @@ module V1
         end
 
         it 'Show list of widgets with default true' do
-          get '/widgets?default=true'
+          get '/widget?default=true'
 
           expect(status).to eq(200)
           expect(json.size).to                        eq(1)
@@ -146,7 +146,7 @@ module V1
         end
 
         it 'Show list of widgets with default false' do
-          get '/widgets?default=false'
+          get '/widget?default=false'
 
           expect(status).to eq(200)
           expect(json.size).to                        eq(1)
@@ -154,7 +154,7 @@ module V1
         end
 
         it 'Show list of widgets for a specific dataset' do
-          get '/widgets?dataset=c547146d-de0c-47ff-a406-5125667fd5e7'
+          get '/widget?dataset=c547146d-de0c-47ff-a406-5125667fd5e7'
 
           expect(status).to eq(200)
           expect(json.size).to                           eq(1)
@@ -162,14 +162,14 @@ module V1
         end
 
         it 'Show blank list of widgets for a non existing dataset' do
-          get '/widgets?dataset=c547146d-de0c-47ff-a406-5125667fd5e9'
+          get '/widget?dataset=c547146d-de0c-47ff-a406-5125667fd5e9'
 
           expect(status).to eq(200)
           expect(json.size).to eq(0)
         end
 
         it 'Show list of widgets' do
-          get '/widgets'
+          get '/widget'
 
           expect(status).to    eq(200)
           expect(json.size).to eq(2)
@@ -177,7 +177,7 @@ module V1
       end
 
       it 'Show widget by slug' do
-        get "/widgets/#{widget_slug}"
+        get "/widget/#{widget_slug}"
 
         expect(status).to eq(200)
         expect(json['attributes']['slug']).to  eq('widget-second-one')
@@ -185,13 +185,13 @@ module V1
       end
 
       it 'Show widget by id' do
-        get "/widgets/#{widget_id}"
+        get "/widget/#{widget_id}"
 
         expect(status).to eq(200)
       end
 
       it 'Allows to create second widget' do
-        post '/widgets', params: params
+        post '/widget', params: params
 
         expect(status).to eq(201)
         expect(json['id']).to                 be_present
@@ -199,7 +199,7 @@ module V1
       end
 
       it 'Name and slug validation' do
-        post '/widgets', params: params_faild
+        post '/widget', params: params_faild
 
         expect(status).to eq(422)
         expect(json_main['message']['name']).to eq(['has already been taken'])
@@ -207,7 +207,7 @@ module V1
       end
 
       it 'Allows to update widget' do
-        put "/widgets/#{widget_slug}", params: update_params
+        put "/widget/#{widget_slug}", params: update_params
 
         expect(status).to eq(200)
         expect(json['id']).to                 be_present
@@ -216,7 +216,7 @@ module V1
       end
 
       it 'Allows to delete widget by id' do
-        delete "/widgets/#{widget_id}"
+        delete "/widget/#{widget_id}"
 
         expect(status).to eq(200)
         expect(json_main['message']).to        eq('Widget deleted')
@@ -224,7 +224,7 @@ module V1
       end
 
       it 'Allows to delete widget by slug' do
-        delete "/widgets/#{widget_slug}"
+        delete "/widget/#{widget_slug}"
 
         expect(status).to eq(200)
         expect(json_main['message']).to                 eq('Widget deleted')
@@ -240,7 +240,7 @@ module V1
         let!(:widget_last_id) { widget_last.id }
 
         it 'Show widget with dataset_id generated from query_url' do
-          get "/widgets/#{widget_last_id}"
+          get "/widget/#{widget_last_id}"
 
           expect(status).to eq(200)
           expect(json['attributes']['slug']).to      eq('widget-last')

@@ -12,7 +12,7 @@ produces:
   - application/json
 
 paths:
-  /widgets:
+  /widget:
     get:
       description: Returns all widgets
       produces:
@@ -77,7 +77,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /widgets/{id}:
+  /widget/{id}:
     get:
       description: Returns widget based on a single UUID or slud, if the geostore not exist return 404
       produces:
