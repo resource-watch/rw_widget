@@ -42,6 +42,24 @@
         }]
       },
       {
+        "url": "/widget/find-by-ids",
+        "method": "POST",
+        "endpoints": [{
+            "method": "POST",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widget/find-by-ids"
+        }]
+      },
+      {
+        "url": "/widget/:id",
+        "method": "PATCH",
+        "endpoints": [{
+            "method": "PATCH",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widget/:id"
+        }]
+      },
+      {
         "url": "/widget/:id",
         "method": "DELETE",
         "authenticated": true,
