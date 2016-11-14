@@ -21,6 +21,15 @@
         }]
       },
       {
+        "url": "/widget/find-by-ids",
+        "method": "POST",
+        "endpoints": [{
+            "method": "POST",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/widget/find-by-ids"
+        }]
+      },
+      {
         "url": "/widget",
         "method": "POST",
         "endpoints": [{
@@ -34,6 +43,15 @@
         "method": "PUT",
         "endpoints": [{
             "method": "PUT",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/widget/:id"
+        }]
+      },
+      {
+        "url": "/widget/:id",
+        "method": "PATCH",
+        "endpoints": [{
+            "method": "PATCH",
             "baseUrl": "http://192.168.99.100:3020",
             "path": "/widget/:id"
         }]

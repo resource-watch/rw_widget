@@ -8,6 +8,11 @@ module V1
       render json: @widgets, each_serializer: WidgetSerializer, meta: { widgets_count: @widgets.size }
     end
 
+    def by_datasets
+      @widgets = Widget.fetch_by_datasets(widget_datasets_filter)
+      render json: @widgets, each_serializer: WidgetSerializer, meta: { widgetsCount: @widgets.size }
+    end
+
     def show
       render json: @widget, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
                                                                   published: @widget.try(:published),
@@ -74,6 +79,10 @@ module V1
 
       def widget_type_filter
         params.permit(:status, :published, :verified, :app, :template, :dataset, :default, :widget)
+      end
+
+      def widget_datasets_filter
+        params.require(:widget).permit(ids: [], app: [])
       end
 
       def widget_params

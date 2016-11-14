@@ -4,9 +4,9 @@ module V1
   describe 'Widgets', type: :request do
     context 'Create, update and delete widgets' do
       let!(:settings) {{"marks": {
-                        "type": "rect",
+                        "type_test": "rect",
                         "from": {
-                          "data": "table"
+                          "data_new": "table"
                       }}}}
 
       let!(:params) {{"widget": { "name": "First test widget" }}}
@@ -34,18 +34,22 @@ module V1
         }
 
         let!(:enabled_widget_2) {
-          Widget.create!(name: 'Widget one two', status: 1, published: true, verified: true, application: ['Gfw'], dataset_id: 'c547146d-de0c-47ff-a406-5125667fd5e7', template: true)
+          Widget.create!(name: 'Widget one two', status: 1, published: true, verified: true, application: ['Gfw', 'test'], dataset_id: 'c547146d-de0c-47ff-a406-5125667fd5e7', template: true)
         }
 
         let!(:unpublished_widget) {
           Widget.create!(name: 'Widget one unpublished', status: 1, published: false, verified: true)
         }
 
+        let!(:next_widget) {
+          Widget.create!(name: 'Next first one', status: 1, published: true, verified: true, application: ['WRW'], dataset_id: 'c867138c-eccf-4e57-8aa2-b62b87800ddh')
+        }
+
         it 'Show list of all widgets' do
           get '/widget?status=all'
 
           expect(status).to    eq(200)
-          expect(json.size).to eq(5)
+          expect(json.size).to eq(6)
         end
 
         it 'Show list of widgets with pending status' do
@@ -59,7 +63,7 @@ module V1
           get '/widget?status=active'
 
           expect(status).to    eq(200)
-          expect(json.size).to eq(2)
+          expect(json.size).to eq(3)
         end
 
         it 'Show list of widgets with disabled status' do
@@ -73,7 +77,7 @@ module V1
           get '/widget?published=true'
 
           expect(status).to eq(200)
-          expect(json.size).to                          eq(2)
+          expect(json.size).to                          eq(3)
           expect(json[0]['attributes']['published']).to eq(true)
         end
 
@@ -97,7 +101,7 @@ module V1
           get '/widget?verified=true'
 
           expect(status).to eq(200)
-          expect(json.size).to                         eq(3)
+          expect(json.size).to                         eq(4)
           expect(json[0]['attributes']['verified']).to eq(true)
         end
 
@@ -112,7 +116,7 @@ module V1
           get '/widget?app=wrw'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(1)
+          expect(json.size).to eq(2)
         end
 
         it 'Show blank list of widgets for not existing app' do
@@ -126,7 +130,7 @@ module V1
           get '/widget?app=all'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(2)
+          expect(json.size).to eq(3)
         end
 
         it 'Show list of widgets with template true' do
@@ -149,7 +153,7 @@ module V1
           get '/widget?default=false'
 
           expect(status).to eq(200)
-          expect(json.size).to                        eq(1)
+          expect(json.size).to                        eq(2)
           expect(json[0]['attributes']['default']).to eq(false)
         end
 
@@ -158,7 +162,7 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to                          eq(1)
-          expect(json[0]['attributes']['datasetId']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
+          expect(json[0]['attributes']['dataset']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
         end
 
         it 'Show blank list of widgets for a non existing dataset' do
@@ -168,15 +172,29 @@ module V1
           expect(json.size).to eq(0)
         end
 
-        it 'Show list of widgets for a specific dataset usig url' do
+        it 'Show list of widgets for a specific dataset using url' do
           get '/dataset/c547146d-de0c-47ff-a406-5125667fd5e7/widget'
 
           expect(status).to eq(200)
           expect(json.size).to                          eq(1)
-          expect(json[0]['attributes']['datasetId']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
+          expect(json[0]['attributes']['dataset']).to eq('c547146d-de0c-47ff-a406-5125667fd5e7')
         end
 
-        it 'Show blank list of widgets for a non existing dataset usig url' do
+        it 'Filter by existing dataset using url and app' do
+          get '/dataset/c547146d-de0c-47ff-a406-5125667fd5e7/widget?app=gfw'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(1)
+        end
+
+        it 'Filter by existing dataset using url and non existing app' do
+          get '/dataset/c547146d-de0c-47ff-a406-5125667fd5e7/widget?app=wrw'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(0)
+        end
+
+        it 'Show blank list of widgets for a non existing dataset using url' do
           get '/dataset/c547146d-de0c-47ff-a406-5125667fd5e9/widget'
 
           expect(status).to eq(200)
@@ -187,7 +205,49 @@ module V1
           get '/widget'
 
           expect(status).to    eq(200)
+          expect(json.size).to eq(3)
+        end
+
+        it 'Filter by dataset ids' do
+          post '/widget/find-by-ids', params: { "widget": { "ids": ["c547146d-de0c-47ff-a406-5125667fd5e7", "c547146d-de0c-47ff-a406-5125667fd5e6"] } }
+
+          expect(status).to eq(200)
           expect(json.size).to eq(2)
+        end
+
+        it 'Filter by dataset ids and apps' do
+          post '/widget/find-by-ids', params: { "widget": { "ids": ["c547146d-de0c-47ff-a406-5125667fd5e7", "c547146d-de0c-47ff-a406-5125667fd5e6"], "app": ["wrw", "gfw"] } }
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(2)
+        end
+
+        it 'Filter by dataset ids and apps' do
+          post '/widget/find-by-ids', params: { "widget": { "ids": ["c547146d-de0c-47ff-a406-5125667fd5e7", "c547146d-de0c-47ff-a406-5125667fd5e6"], "app": ["prep", "test", "gfw"] } }
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(2)
+        end
+
+        it 'Filter by dataset ids and apps' do
+          post '/widget/find-by-ids', params: { "widget": { "ids": ["c547146d-de0c-47ff-a406-5125667fd5e7", "c547146d-de0c-47ff-a406-5125667fd5e6"], "app": ["test"] } }
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(1)
+        end
+
+        it 'Filter by dataset ids and apps' do
+          post '/widget/find-by-ids', params: { "widget": { "ids": ["c547146d-de0c-47ff-a406-5125667fd5e7", "c547146d-de0c-47ff-a406-5125667fd5e6"], "app": ["prep"] } }
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(0)
+        end
+
+        it 'Filter by non existing dataset ids' do
+          post '/widget/find-by-ids', params: { "widget": { "ids": ["c867138c-eccf-4e57-8aa2-b62b87800ddx"] } }
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(0)
         end
       end
 
@@ -260,7 +320,7 @@ module V1
           expect(status).to eq(200)
           expect(json['attributes']['slug']).to      eq('widget-last')
           expect(json['attributes']['layerId']).to   eq('c547146d-de0c-47ff-a406-5125667fd5e1')
-          expect(json['attributes']['datasetId']).to eq('c547146d-de0c-47ff-a406-5125667fd599')
+          expect(json['attributes']['dataset']).to eq('c547146d-de0c-47ff-a406-5125667fd599')
           expect(json_main['meta']['verified']).to   eq(true)
         end
       end

@@ -25,7 +25,7 @@
 #
 
 class WidgetSerializer < ActiveModel::Serializer
-  attributes :id, :application, :slug, :name, :description, :source, :sourceUrl, :layerId, :datasetId, :authors, :queryUrl, :widgetConfig, :template, :default,
+  attributes :id, :application, :slug, :name, :description, :source, :sourceUrl, :layerId, :dataset, :authors, :queryUrl, :widgetConfig, :template, :default,
              :status, :published, :verified
 
   def status
@@ -40,7 +40,7 @@ class WidgetSerializer < ActiveModel::Serializer
     object.try(:layer_id)
   end
 
-  def datasetId
+  def dataset
     object.try(:dataset_id)
   end
 
