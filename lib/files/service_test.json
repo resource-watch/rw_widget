@@ -12,6 +12,15 @@
         }]
       },
       {
+        "url": "/dataset/:dataset_id/widget",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/dataset/:dataset_id/widget"
+        }]
+      },
+      {
         "url": "/widget/:id",
         "method": "GET",
         "endpoints": [{
