@@ -13,6 +13,15 @@
         }]
       },
       {
+        "url": "/dataset/:dataset_id/widget",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget"
+        }]
+      },
+      {
         "url": "/widget/:id",
         "method": "GET",
         "endpoints": [{
