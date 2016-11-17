@@ -45,7 +45,7 @@ class WidgetSerializer < ActiveModel::Serializer
   end
 
   def queryUrl
-    object.try(:query_url9)
+    object.try(:query_url)
   end
 
   def widgetConfig
