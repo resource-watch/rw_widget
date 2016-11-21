@@ -280,8 +280,7 @@ module V1
         post '/widget', params: params_faild
 
         expect(status).to eq(422)
-        expect(json_main['message']['name']).to eq(['has already been taken'])
-        expect(json_main['message']['slug']).to eq(['has already been taken'])
+        expect(json_main['message']).to eq(['Name has already been taken', 'Slug has already been taken'])
       end
 
       it 'Allows to update widget' do

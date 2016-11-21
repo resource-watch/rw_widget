@@ -34,7 +34,7 @@ module V1
                                                                                    updated_at: @widget.try(:updated_at),
                                                                                    created_at: @widget.try(:created_at) }
         else
-          render json: { success: false, message: @widget.errors }, status: 422
+          render json: { success: false, message: @widget.errors.full_messages }, status: 422
         end
       else
         render json: { errors: [{ status: 401, title: 'Not authorized!' }] }, status: 401
@@ -52,7 +52,7 @@ module V1
                                                                                    updated_at: @widget.try(:updated_at),
                                                                                    created_at: @widget.try(:created_at) }
         else
-          render json: { success: false, message: @widget.errors }, status: 422
+          render json: { success: false, message: @widget.errors.full_messages }, status: 422
         end
       else
         render json: { errors: [{ status: 401, title: 'Not authorized!' }] }, status: 401
