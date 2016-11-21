@@ -353,7 +353,7 @@ module V1
         end
 
         it 'Allows to update widget by superadmin user' do
-          patch "/widget/#{widget_id}", params: {"loggedUser": {"role": "Superadmin", "extraUserData": { "apps": ["gfw","prep"] }, "id": "3242-32442-436"},
+          patch "/widget/#{widget_id}", params: {"loggedUser": {"role": "Superadmin", "extraUserData": { }, "id": "3242-32442-436"},
                                                  "widget": {"application": ["testapp"],
                                                             "name": "Widget"}}
 
