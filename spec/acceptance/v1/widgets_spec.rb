@@ -302,7 +302,7 @@ module V1
       end
 
       it 'Allows to delete widget by id' do
-        delete "/widget/#{widget_id}", params: { "loggedUser": {"role": "manager", "extraUserData": { "apps": ["gfw","prep"] }, "id": "3242-32442-432"}}
+        delete "/widget/#{widget_id}", params: { "loggedUser": "{\"role\": \"manager\", \"extraUserData\": { \"apps\": [\"gfw\",\"prep\"] }, \"id\": \"3242-32442-432\"}"}
 
         expect(status).to eq(200)
         expect(json_main['message']).to        eq('Widget deleted')
