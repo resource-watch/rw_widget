@@ -8,8 +8,8 @@ module V1
     before_action :set_caller, only: :update
 
     def index
-      @widgets = Widget.fetch_all(widget_type_filter)
-      render json: @widgets, each_serializer: WidgetSerializer, meta: { widgets_count: @widgets.size }
+      @widgets = WidgetsIndex.new(self)
+      render json: @widgets.widgets, each_serializer: WidgetSerializer
     end
 
     def by_datasets
@@ -34,7 +34,7 @@ module V1
                                                                                    updated_at: @widget.try(:updated_at),
                                                                                    created_at: @widget.try(:created_at) }
         else
-          render json: { success: false, message: @widget.errors.full_messages }, status: 422
+          render json: { errors: [{ status: 422, title: @widget.errors.full_messages }] }, status: 422
         end
       else
         render json: { errors: [{ status: 401, title: 'Not authorized!' }] }, status: 401
@@ -52,7 +52,7 @@ module V1
                                                                                    updated_at: @widget.try(:updated_at),
                                                                                    created_at: @widget.try(:created_at) }
         else
-          render json: { success: false, message: @widget.errors.full_messages }, status: 422
+          render json: { errors: [{ status: 422, title: @widget.errors.full_messages }] }, status: 422
         end
       else
         render json: { errors: [{ status: 401, title: 'Not authorized!' }] }, status: 401
@@ -83,7 +83,7 @@ module V1
         @docs = Oj.load(File.read("lib/files/service_#{ENV['RAILS_ENV']}.json"))
         render json: @docs
       else
-        render json: { success: false, message: 'Missing url and token params' }, status: 422
+        render json: { errors: [{ status: 422, title: 'Missing url and token params' }] }, status: 422
       end
     end
 
@@ -137,10 +137,6 @@ module V1
           @widget_params = widget_params.except(:logged_user)
           @authorized = User.authorize_user!(@user, intersect_apps(@widget.application, @apps, @widget_apps), @widget.user_id, match_apps: true)
         end
-      end
-
-      def widget_type_filter
-        params.permit(:status, :published, :verified, :app, :template, :dataset, :default, :widget)
       end
 
       def widget_datasets_filter
