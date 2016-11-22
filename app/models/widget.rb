@@ -22,6 +22,7 @@
 #  template      :boolean          default(FALSE)
 #  default       :boolean          default(FALSE)
 #  application   :jsonb
+#  user_id       :string
 #
 
 class Widget < ApplicationRecord
