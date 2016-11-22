@@ -42,6 +42,7 @@
       {
         "url": "/widget",
         "method": "POST",
+        "authenticated": true,
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://localhost:3020",
@@ -50,6 +51,7 @@
       },
       {
         "url": "/widget/:id",
+        "authenticated": true,
         "method": "PUT",
         "endpoints": [{
             "method": "PUT",
@@ -59,6 +61,7 @@
       },
       {
         "url": "/widget/:id",
+        "authenticated": true,
         "method": "PATCH",
         "endpoints": [{
             "method": "PATCH",
@@ -69,6 +72,7 @@
       {
         "url": "/widget/:id",
         "method": "DELETE",
+        "authenticated": true,
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://localhost:3020",
