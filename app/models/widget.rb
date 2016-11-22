@@ -84,7 +84,7 @@ class Widget < ApplicationRecord
       dataset   = options['dataset']         if options['dataset'].present?
       default   = options['default']         if options['default'].present?
 
-      widgets = recent
+      widgets = all
       widgets = widgets.filter_dataset(dataset) if dataset.present?
 
       widgets = case status
