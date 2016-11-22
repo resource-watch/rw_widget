@@ -22,10 +22,11 @@
 #  template      :boolean          default(FALSE)
 #  default       :boolean          default(FALSE)
 #  application   :jsonb
+#  user_id       :string
 #
 
 class WidgetSerializer < ActiveModel::Serializer
-  attributes :id, :application, :slug, :name, :description, :source, :sourceUrl, :layerId, :dataset, :authors, :queryUrl, :widgetConfig, :template, :default,
+  attributes :id, :user_id, :application, :slug, :name, :description, :source, :sourceUrl, :layerId, :dataset, :authors, :queryUrl, :widgetConfig, :template, :default,
              :status, :published, :verified
 
   def status

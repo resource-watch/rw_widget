@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160727113446) do
+ActiveRecord::Schema.define(version: 20161121120222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20160727113446) do
     t.boolean  "template",      default: false
     t.boolean  "default",       default: false
     t.jsonb    "application",   default: []
+    t.string   "user_id"
     t.index ["published"], name: "index_widgets_on_published", using: :btree
     t.index ["status"], name: "index_widgets_on_status", using: :btree
     t.index ["widget_config"], name: "index_widgets_on_widget_config", using: :gin
