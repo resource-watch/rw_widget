@@ -21,6 +21,16 @@
             "path": "/dataset/:dataset_id/widget"
         }]
       },
+      ,
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
+        }]
+      },
       {
         "url": "/widget/:id",
         "method": "GET",
@@ -77,6 +87,46 @@
             "method": "DELETE",
             "baseUrl": "http://localhost:3020",
             "path": "/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget",
+        "method": "POST",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "POST",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "PUT",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "PUT",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "PATCH",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "PATCH",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "DELETE",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "DELETE",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
         }]
       }
     ],

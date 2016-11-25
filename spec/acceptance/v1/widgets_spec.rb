@@ -10,13 +10,13 @@ module V1
                       }}}}
 
       let!(:params) {{ "loggedUser": {"role": "manager", "extraUserData": { "apps": ["gfw","prep"] }, "id": "3242-32442-432"},
-                       "widget": { "name": "First test widget", "application": ["gfw"] }}}
+                       "widget": { "name": "First test widget", "application": ["gfw"], "datasetId": "c867138c-eccf-4e57-8aa2-b62b87800ddf" }}}
 
       let!(:params_faild) {{ "loggedUser": {"role": "manager", "extraUserData": { "apps": ["gfw","prep"] }, "id": "3242-32442-432"},
                               "widget": { "name": "Widget second one", "application": ["gfw"] }}}
 
       let!(:widget) {
-        Widget.create!(name: 'Widget second one', application: ['gfw'], user_id: '3242-32442-432')
+        Widget.create!(name: 'Widget second one', application: ['gfw'], user_id: '3242-32442-432', dataset_id: "c867138c-eccf-4e57-8aa2-b62b87800ddf")
       }
 
       let!(:widget_id)   { widget.id   }
@@ -85,6 +85,17 @@ module V1
         expect(json_main['errors'][0]['title']).to eq(['Name has already been taken', 'Slug has already been taken'])
       end
 
+      it 'Allows to create dataset widget' do
+        post '/dataset/c867138c-eccf-4e57-8aa2-b62b87800ddf/widget', params: params
+
+        expect(status).to eq(201)
+        expect(json['id']).to                         be_present
+        expect(json['attributes']['slug']).to         eq('first-test-widget')
+        expect(json['attributes']['dataset']).to      eq('c867138c-eccf-4e57-8aa2-b62b87800ddf')
+        expect(json['attributes']['application']).to  eq(['gfw'])
+        expect(json['attributes']['userId']).to       eq('3242-32442-432')
+      end
+
       it 'Allows to update widget' do
         put "/widget/#{widget_slug}", params: update_params
 
@@ -103,6 +114,24 @@ module V1
         expect(Widget.find_by(slug: widget_slug).user_id).to eq('3242-32442-432')
       end
 
+      it 'Allows to update dataset widget via put' do
+        put "/dataset/c867138c-eccf-4e57-8aa2-b62b87800ddg/widget/#{widget_slug}", params: update_params
+
+        expect(status).to eq(200)
+        expect(json['id']).to                 eq(widget_id)
+        expect(json['attributes']['name']).to eq('First test one update')
+        expect(json['attributes']['slug']).to eq('updated-first-test-widget')
+      end
+
+      it 'Allows to update dataset widget via patch' do
+        patch "/dataset/c867138c-eccf-4e57-8aa2-b62b87800ddg/widget/#{widget_slug}", params: update_params
+
+        expect(status).to eq(200)
+        expect(json['id']).to                 eq(widget_id)
+        expect(json['attributes']['name']).to eq('First test one update')
+        expect(json['attributes']['slug']).to eq('updated-first-test-widget')
+      end
+
       it 'Allows to delete widget by id' do
         delete "/widget/#{widget_id}", params: { "loggedUser": "{\"role\": \"manager\", \"extraUserData\": { \"apps\": [\"gfw\",\"prep\"] }, \"id\": \"3242-32442-432\"}"}
 
@@ -113,6 +142,22 @@ module V1
 
       it 'Allows to delete widget by slug' do
         delete "/widget/#{widget_slug}", params: { "loggedUser": {"role": "manager", "extraUserData": { "apps": ["gfw","prep"] }, "id": "3242-32442-432"}}
+
+        expect(status).to eq(200)
+        expect(json_main['message']).to            eq('Widget deleted')
+        expect(Widget.where(slug: widget_slug)).to be_empty
+      end
+
+      it 'Allows to delete widget by dataset and id' do
+        delete "/dataset/c867138c-eccf-4e57-8aa2-b62b87800ddg/widget/#{widget_id}", params: { "loggedUser": "{\"role\": \"manager\", \"extraUserData\": { \"apps\": [\"gfw\",\"prep\",\"wrw\"] }, \"id\": \"3242-32442-432\"}" }
+
+        expect(status).to eq(200)
+        expect(json_main['message']).to        eq('Widget deleted')
+        expect(Widget.where(id: widget_id)).to be_empty
+      end
+
+      it 'Allows to delete widget by dataset and slug' do
+        delete "/dataset/c867138c-eccf-4e57-8aa2-b62b87800ddg/widget/#{widget_slug}", params: { "loggedUser": "{\"role\": \"manager\", \"extraUserData\": { \"apps\": [\"gfw\",\"prep\",\"wrw\"] }, \"id\": \"3242-32442-432\"}"}
 
         expect(status).to eq(200)
         expect(json_main['message']).to            eq('Widget deleted')
