@@ -105,7 +105,7 @@ module V1
         expect(status).to eq(200)
         expect(json['id']).to                 be_present
         expect(json['attributes']['name']).to eq('First test one update')
-        expect(json['attributes']['slug']).to eq('updated-first-test-widget')
+        expect(json['attributes']['slug']).to eq('widget-second-one')
       end
 
       it 'Allows to update widget from internal microservice' do
@@ -123,7 +123,8 @@ module V1
         expect(status).to eq(200)
         expect(json['id']).to                 eq(widget_id)
         expect(json['attributes']['name']).to eq('First test one update')
-        expect(json['attributes']['slug']).to eq('updated-first-test-widget')
+        expect(json['attributes']['slug']).to eq('widget-second-one')
+        expect(json['id']).to                 eq("#{widget_id}")
       end
 
       it 'Allows to update dataset widget via patch' do
@@ -132,7 +133,7 @@ module V1
         expect(status).to eq(200)
         expect(json['id']).to                 eq(widget_id)
         expect(json['attributes']['name']).to eq('First test one update')
-        expect(json['attributes']['slug']).to eq('updated-first-test-widget')
+        expect(json['attributes']['slug']).to eq('widget-second-one')
       end
 
       it 'Allows to delete widget by id' do
