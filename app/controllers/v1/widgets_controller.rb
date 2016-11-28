@@ -124,10 +124,10 @@ module V1
 
       def set_caller
         if widget_params[:logged_user].present? && widget_params[:logged_user][:id] == 'microservice'
-          @widget_params = widget_params.except(:user_id, :logged_user)
+          @widget_params = widget_params.except(:user_id, :logged_user, :id, :slug)
           @authorized = true
         else
-          @widget_params = widget_params.except(:logged_user)
+          @widget_params = widget_params.except(:logged_user, :id, :slug)
           @authorized = User.authorize_user!(@user, intersect_apps(@widget.application, @apps, @widget_apps), @widget.user_id, match_apps: true)
         end
       end
