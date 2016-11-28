@@ -21,7 +21,6 @@
             "path": "/dataset/:dataset_id/widget"
         }]
       },
-      ,
       {
         "url": "/dataset/:dataset_id/widget/:id",
         "method": "GET",
