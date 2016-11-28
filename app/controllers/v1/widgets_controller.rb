@@ -26,36 +26,44 @@ module V1
     end
 
     def update
-      if @authorized.present?
-        if @widget.update(@widget_params)
-          render json: @widget, status: 200, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
-                                                                                   published: @widget.try(:published),
-                                                                                   verified: @widget.try(:verified),
-                                                                                   updated_at: @widget.try(:updated_at),
-                                                                                   created_at: @widget.try(:created_at) }
+      begin
+        if @authorized.present?
+          if @widget.update(@widget_params)
+            render json: @widget, status: 200, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
+                                                                                     published: @widget.try(:published),
+                                                                                     verified: @widget.try(:verified),
+                                                                                     updated_at: @widget.try(:updated_at),
+                                                                                     created_at: @widget.try(:created_at) }
+          else
+            render json: { errors: [{ status: 422, title: @widget.errors.full_messages }] }, status: 422
+          end
         else
-          render json: { errors: [{ status: 422, title: @widget.errors.full_messages }] }, status: 422
+          render json: { errors: [{ status: 401, title: 'Not authorized!' }] }, status: 401
         end
-      else
-        render json: { errors: [{ status: 401, title: 'Not authorized!' }] }, status: 401
+      rescue StandardError => e
+        render json: { errors: [{ status: 422, title: e }] }, status: 422
       end
     end
 
     def create
-      authorized = User.authorize_user!(@user, @widget_apps)
-      if authorized.present?
-        @widget = Widget.new(widget_params.except(:logged_user))
-        if @widget.save
-          render json: @widget, status: 201, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
-                                                                                   published: @widget.try(:published),
-                                                                                   verified: @widget.try(:verified),
-                                                                                   updated_at: @widget.try(:updated_at),
-                                                                                   created_at: @widget.try(:created_at) }
+      begin
+        authorized = User.authorize_user!(@user, @widget_apps)
+        if authorized.present?
+          @widget = Widget.new(widget_params.except(:logged_user))
+          if @widget.save
+            render json: @widget, status: 201, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
+                                                                                     published: @widget.try(:published),
+                                                                                     verified: @widget.try(:verified),
+                                                                                     updated_at: @widget.try(:updated_at),
+                                                                                     created_at: @widget.try(:created_at) }
+          else
+            render json: { errors: [{ status: 422, title: @widget.errors.full_messages }] }, status: 422
+          end
         else
-          render json: { errors: [{ status: 422, title: @widget.errors.full_messages }] }, status: 422
+          render json: { errors: [{ status: 401, title: 'Not authorized!' }] }, status: 401
         end
-      else
-        render json: { errors: [{ status: 401, title: 'Not authorized!' }] }, status: 401
+      rescue StandardError => e
+        render json: { errors: [{ status: 422, title: e }] }, status: 422
       end
     end
 
@@ -119,7 +127,7 @@ module V1
                             params[:logged_user][:extra_user_data][:apps].map { |v| v.downcase }.uniq
                           end
           @widget_apps  = if action_name != 'destroy' && widget_params[:application].present?
-                            widget_params[:application]
+                            widget_params[:application].map(&:downcase)
                           end
 
           User.data = [{ user_id: user_id, role: @role, apps: @apps }]
