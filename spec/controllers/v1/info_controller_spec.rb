@@ -7,9 +7,9 @@ RSpec.describe V1::InfoController, type: :controller do
       expect(response.status).to eq 200
     end
 
-    it 'Info responds 422' do
+    it 'Info responds 200' do
       get :info
-      expect(response.status).to eq 422
+      expect(response.status).to eq 200
     end
   end
 
