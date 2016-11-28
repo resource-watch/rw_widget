@@ -27,6 +27,9 @@ module V1
                                           "slug": "updated-first-test-widget", "application": ["gfw"] }
                            }}
 
+      let!(:params_datset) {{ "loggedUser": {"role": "manager", "extraUserData": { "apps": ["gfw","prep"] }, "id": "3242-32442-432"},
+                       "widget": { "name": "First test widget", "application": ["gfw"] }}}
+
       context 'List filters' do
         let!(:disabled_widget) {
           Widget.create!(name: 'Widget second second', slug: 'widget-second-second', status: 3, published: false)
@@ -86,7 +89,7 @@ module V1
       end
 
       it 'Allows to create dataset widget' do
-        post '/dataset/c867138c-eccf-4e57-8aa2-b62b87800ddf/widget', params: params
+        post '/dataset/c867138c-eccf-4e57-8aa2-b62b87800ddf/widget', params: params_datset
 
         expect(status).to eq(201)
         expect(json['id']).to                         be_present
