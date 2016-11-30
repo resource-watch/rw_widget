@@ -37,7 +37,7 @@ class Widget < ApplicationRecord
 
   before_save :generate_dataset_id, if: 'query_url_changed? || dataset_id.blank?'
 
-  validates :name, presence: true
+  validates :name, presence: true, on: :create
   validates :slug, presence: true, format: { with: /\A[^\s!#$%^&*()（）=+;:'"\[\]\{\}|\\\/<>?,]+\z/,
                                              allow_blank: true,
                                              message: 'invalid. Slug must contain at least one letter and no special character' }
