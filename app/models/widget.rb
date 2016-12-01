@@ -58,8 +58,9 @@ class Widget < ApplicationRecord
   scope :notfilter_default,  -> { where(default: false)         }
   scope :filter_actives,     -> { filter_saved.filter_published }
 
-  scope :filter_app,      ->(app)     { where('application ?| array[:keys]', keys: app) }
-  scope :filter_dataset,  ->(dataset) { where(dataset_id: dataset)                      }
+  scope :filter_app,      ->(app)     { where('widgets.application ?| array[:keys]', keys: app) }
+  scope :filter_dataset,  ->(dataset) { where(dataset_id: dataset)                              }
+  scope :filter_name,     ->(name)    { where('LOWER(widgets.name) LIKE LOWER(?)', "%#{name}%") }
 
   def status_txt
     STATUS[status - 0]
@@ -76,13 +77,14 @@ class Widget < ApplicationRecord
     end
 
     def fetch_all(options)
-      status    = options['status'].downcase if options['status'].present?
-      published = options['published']       if options['published'].present?
-      verified  = options['verified']        if options['verified'].present?
-      apps       = options['app'].downcase    if options['app'].present?
-      template  = options['template']        if options['template'].present?
-      dataset   = options['dataset']         if options['dataset'].present?
-      default   = options['default']         if options['default'].present?
+      status       = options['status'].downcase if options['status'].present?
+      published    = options['published']       if options['published'].present?
+      verified     = options['verified']        if options['verified'].present?
+      apps         = options['app'].downcase    if options['app'].present?
+      template     = options['template']        if options['template'].present?
+      dataset      = options['dataset']         if options['dataset'].present?
+      default      = options['default']         if options['default'].present?
+      find_by_name = options['name']            if options['name'].present?
 
       widgets = all
       widgets = widgets.filter_dataset(dataset) if dataset.present?
@@ -106,6 +108,7 @@ class Widget < ApplicationRecord
       widgets = widgets.notfilter_template if template.present?  && template.include?('false')
       widgets = widgets.filter_default     if default.present?   && default.include?('true')
       widgets = widgets.notfilter_default  if default.present?   && default.include?('false')
+      widgets = filter_name(find_by_name)  if find_by_name.present?
 
       widgets
     end

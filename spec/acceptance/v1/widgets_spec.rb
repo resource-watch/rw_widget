@@ -57,6 +57,22 @@ module V1
           expect(status).to    eq(200)
           expect(json.size).to eq(6)
         end
+
+        context 'Find widgets by name' do
+          it 'Allows to find widgets by name' do
+            get '/widget?name=Second'
+
+            expect(status).to eq(200)
+            expect(json.length).to eq(2)
+          end
+
+          it 'Allows to find widgets by name' do
+            get '/widget?name=twO'
+
+            expect(status).to eq(200)
+            expect(json.length).to eq(1)
+          end
+        end
       end
 
       it 'Show widget by slug' do
