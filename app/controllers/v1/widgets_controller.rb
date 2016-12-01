@@ -9,7 +9,7 @@ module V1
 
     def index
       @widgets = WidgetsIndex.new(self)
-      render json: @widgets.widgets, each_serializer: WidgetSerializer
+      render json: @widgets.widgets, each_serializer: WidgetSerializer, links: @widgets.links
     end
 
     def by_datasets
