@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: widgets
@@ -21,12 +22,13 @@
 #  template      :boolean          default(FALSE)
 #  default       :boolean          default(FALSE)
 #  application   :jsonb
+#  user_id       :string
 #
 
 class Widget < ApplicationRecord
   STATUS = %w(pending saved failed deleted).freeze
 
-  before_save   :merge_apps, if: "application_changed?"
+  before_save   :merge_apps, if: 'application_changed?'
   before_update :assign_slug
 
   before_validation(on: [:create, :update]) do
@@ -35,7 +37,7 @@ class Widget < ApplicationRecord
 
   before_save :generate_dataset_id, if: 'query_url_changed? || dataset_id.blank?'
 
-  validates :name, presence: true
+  validates :name, presence: true, on: :create
   validates :slug, presence: true, format: { with: /\A[^\s!#$%^&*()（）=+;:'"\[\]\{\}|\\\/<>?,]+\z/,
                                              allow_blank: true,
                                              message: 'invalid. Slug must contain at least one letter and no special character' }
@@ -56,8 +58,9 @@ class Widget < ApplicationRecord
   scope :notfilter_default,  -> { where(default: false)         }
   scope :filter_actives,     -> { filter_saved.filter_published }
 
-  scope :filter_apps,     -> (app)     { where('application ?| array[:keys]', keys: ["#{app}"]) }
-  scope :filter_dataset,  -> (dataset) { where(dataset_id: dataset)                             }
+  scope :filter_app,      ->(app)     { where('widgets.application ?| array[:keys]', keys: app) }
+  scope :filter_dataset,  ->(dataset) { where(dataset_id: dataset)                              }
+  scope :filter_name,     ->(name)    { where('LOWER(widgets.name) LIKE LOWER(?)', "%#{name}%") }
 
   def status_txt
     STATUS[status - 0]
@@ -68,21 +71,23 @@ class Widget < ApplicationRecord
   end
 
   class << self
-    def find_by_id_or_slug(param)
+    def set_by_id_or_slug(param)
       widget_id = where(slug: param).or(where(id: param)).pluck(:id).min
       find(widget_id) rescue nil
     end
 
     def fetch_all(options)
-      status    = options['status'].downcase if options['status'].present?
-      published = options['published']       if options['published'].present?
-      verified  = options['verified']        if options['verified'].present?
-      app       = options['app'].downcase    if options['app'].present?
-      template  = options['template']        if options['template'].present?
-      dataset   = options['dataset']         if options['dataset'].present?
-      default   = options['default']         if options['default'].present?
+      status       = options['status'].downcase if options['status'].present?
+      published    = options['published']       if options['published'].present?
+      verified     = options['verified']        if options['verified'].present?
+      apps         = options['app'].downcase    if options['app'].present?
+      template     = options['template']        if options['template'].present?
+      dataset      = options['dataset']         if options['dataset'].present?
+      default      = options['default']         if options['default'].present?
+      find_by_name = options['name']            if options['name'].present?
 
-      widgets = recent
+      widgets = all
+      widgets = widgets.filter_dataset(dataset) if dataset.present?
 
       widgets = case status
                 when 'pending'  then widgets.filter_pending
@@ -91,31 +96,42 @@ class Widget < ApplicationRecord
                 when 'disabled' then widgets.filter_inactives
                 when 'all'      then widgets
                 else
-                  (published.present? || verified.present?) ? widgets : widgets.filter_actives
+                  published.present? || verified.present? ? widgets : widgets.filter_actives
                 end
 
-      widgets = widgets.filter_published        if published.present? && published.include?('true')
-      widgets = widgets.filter_unpublished      if published.present? && published.include?('false')
-      widgets = widgets.filter_verified         if verified.present?  && verified.include?('true')
-      widgets = widgets.filter_unverified       if verified.present?  && verified.include?('false')
-      widgets = app_filter(widgets, app)        if app.present?
-      widgets = widgets.filter_template         if template.present?  && template.include?('true')
-      widgets = widgets.notfilter_template      if template.present?  && template.include?('false')
-      widgets = widgets.filter_default          if default.present?   && default.include?('true')
-      widgets = widgets.notfilter_default       if default.present?   && default.include?('false')
-      widgets = widgets.filter_dataset(dataset) if dataset.present?
+      widgets = widgets.filter_published   if published.present? && published.include?('true')
+      widgets = widgets.filter_unpublished if published.present? && published.include?('false')
+      widgets = widgets.filter_verified    if verified.present?  && verified.include?('true')
+      widgets = widgets.filter_unverified  if verified.present?  && verified.include?('false')
+      widgets = app_filter(widgets, apps)  if apps.present?
+      widgets = widgets.filter_template    if template.present?  && template.include?('true')
+      widgets = widgets.notfilter_template if template.present?  && template.include?('false')
+      widgets = widgets.filter_default     if default.present?   && default.include?('true')
+      widgets = widgets.notfilter_default  if default.present?   && default.include?('false')
+      widgets = filter_name(find_by_name)  if find_by_name.present?
 
       widgets
     end
 
-    def app_filter(scope, app)
+    def fetch_by_datasets(options)
+      ids  = options['ids']                 if options['ids'].present?
+      apps = options['app'].map(&:downcase) if options['app'].present?
+
+      widgets = recent
+      widgets = widgets.filter_actives
+      widgets = widgets.filter_dataset(ids) if ids.present?
+      widgets = app_filter(widgets, apps)    if apps.present?
+      widgets
+    end
+
+    def app_filter(scope, apps)
+      apps    = apps.is_a?(Array) ? apps : apps.split(',')
       widgets = scope
-      widgets = if app.present? && !app.include?('all')
-                  widgets.filter_apps(app)
+      widgets = if apps.present? && !apps.include?('all')
+                  widgets.filter_app(apps)
                 else
                   widgets
                 end
-
       widgets
     end
   end

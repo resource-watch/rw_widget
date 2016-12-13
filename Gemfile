@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 source 'https://rubygems.org'
 
-ruby '2.3.0'
+ruby '2.3.1'
 
 gem 'rails', '~> 5.0.0'
 
@@ -10,6 +11,8 @@ gem 'oj'
 gem 'oj_mimic_json'
 gem 'active_model_serializers', '~> 0.10.2'
 gem 'typhoeus', require: false
+gem 'active_hash'
+gem 'will_paginate'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5.1'

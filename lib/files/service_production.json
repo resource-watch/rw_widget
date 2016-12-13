@@ -4,51 +4,128 @@
     "tags": ["rw"],
     "urls": [
       {
-        "url": "/widgets",
+        "url": "/widget",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets"
+            "path": "/widget"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/dataset/:dataset_id/widget",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets/:id"
+            "path": "/dataset/:dataset_id/widget"
         }]
       },
       {
-        "url": "/widgets",
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
+        }]
+      },
+      {
+        "url": "/widget/:id",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widget/:id"
+        }]
+      },
+      {
+        "url": "/widget",
         "method": "POST",
         "authenticated": true,
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets"
+            "path": "/widget"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/:id",
         "method": "PUT",
         "authenticated": true,
         "endpoints": [{
             "method": "PUT",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/find-by-ids",
+        "method": "POST",
+        "endpoints": [{
+            "method": "POST",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widget/find-by-ids"
+        }]
+      },
+      {
+        "url": "/widget/:id",
+        "method": "PATCH",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "PATCH",
+            "baseUrl": "http://localhost:3020",
+            "path": "/widget/:id"
+        }]
+      },
+      {
+        "url": "/widget/:id",
         "method": "DELETE",
         "authenticated": true,
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://localhost:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget",
+        "method": "POST",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "POST",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "PUT",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "PUT",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "PATCH",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "PATCH",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "DELETE",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "DELETE",
+            "baseUrl": "http://localhost:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
         }]
       }
     ],
@@ -67,7 +144,7 @@
         "application/json"
       ],
       "paths": {
-        "/widgets": {
+        "/widget": {
           "get": {
             "description": "Returns all widgets",
             "produces": [
@@ -164,7 +241,7 @@
             }
           }
         },
-        "/widgets/{id}": {
+        "/widget/{id}": {
           "get": {
             "description": "Returns widget based on a single UUID or slud, if the geostore not exist return 404",
             "produces": [

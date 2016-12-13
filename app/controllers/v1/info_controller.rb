@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module V1
   class InfoController < ApplicationController
     def docs
@@ -6,9 +7,8 @@ module V1
     end
 
     def info
-      @service = ServiceSetting.save_gateway_settings(params)
-      if @service
-        @docs = Oj.load(File.read("lib/files/service_#{ENV['RAILS_ENV']}.json"))
+      @docs = Oj.load(File.read("lib/files/service_#{ENV['RAILS_ENV']}.json"))
+      if @docs
         render json: @docs
       else
         render json: { success: false, message: 'Missing url and token params' }, status: 422

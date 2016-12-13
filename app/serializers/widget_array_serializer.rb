@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class WidgetArraySerializer < ActiveModel::Serializer
   attributes :id, :slug, :name, :status, :published, :verified, :template, :default, :dataset_id, :application
 

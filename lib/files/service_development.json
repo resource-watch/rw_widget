@@ -3,48 +3,120 @@
     "name": "RW Widget v1",
     "urls": [
       {
-        "url": "/widgets",
+        "url": "/widget",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets"
+            "path": "/widget"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/dataset/:dataset_id/widget",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets/:id"
+            "path": "/dataset/:dataset_id/widget"
         }]
       },
       {
-        "url": "/widgets",
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/dataset/:dataset_id/widget/:id"
+        }]
+      },
+      {
+        "url": "/widget/:id",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/widget/:id"
+        }]
+      },
+      {
+        "url": "/widget/find-by-ids",
         "method": "POST",
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets"
+            "path": "/widget/find-by-ids"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget",
+        "method": "POST",
+        "endpoints": [{
+            "method": "POST",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/widget"
+        }]
+      },
+      {
+        "url": "/widget/:id",
         "method": "PUT",
         "endpoints": [{
             "method": "PUT",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
         }]
       },
       {
-        "url": "/widgets/:id",
+        "url": "/widget/:id",
+        "method": "PATCH",
+        "endpoints": [{
+            "method": "PATCH",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/widget/:id"
+        }]
+      },
+      {
+        "url": "/widget/:id",
         "method": "DELETE",
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/widgets/:id"
+            "path": "/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget",
+        "method": "POST",
+        "endpoints": [{
+            "method": "POST",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/dataset/:dataset_id/widget/widget"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "PUT",
+        "endpoints": [{
+            "method": "PUT",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/dataset/:dataset_id/widget/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "PATCH",
+        "endpoints": [{
+            "method": "PATCH",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/dataset/:dataset_id/widget/widget/:id"
+        }]
+      },
+      {
+        "url": "/dataset/:dataset_id/widget/:id",
+        "method": "DELETE",
+        "endpoints": [{
+            "method": "DELETE",
+            "baseUrl": "http://192.168.99.100:3020",
+            "path": "/dataset/:dataset_id/widget/widget/:id"
         }]
       }
     ],
