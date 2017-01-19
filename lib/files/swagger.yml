@@ -58,6 +58,26 @@ paths:
           in: query
           description: Sort filter (?sort=name)
           type: string
+        - name: name
+          in: query
+          description: Filter the widgets whose name contains the filter text
+          type: string
+        - name: verified
+          in: query
+          description: Filter by verified status (true,false)
+          type: boolean
+        - name: template
+          in: query
+          description: Filter by template status (true,false)
+          type: boolean
+        - name: dataset
+          in: query
+          description: Filter the widgets by dataset uuid
+          type: string
+        - name: default
+          in: query
+          description: Filter by default status (true,false)
+          type: boolean
       responses:
         200:
           description: Widgets obtained
