@@ -3,19 +3,41 @@ info:
   title: RW Widget API
   description: Resource Watch - Widget API
   version: "1.0.0"
-host: ec2-52-23-163-254.compute-1.amazonaws.com
+host: staging-api.globalforestwatch.org
 
 schemes:
+  - https
   - http
 
-produces:
-  - application/json
+consumes:
+  - application/vnd.api+json
 
+produces:
+  - application/vnd.api+json
+
+###############################################################################
+#                                  Security
+###############################################################################
+#securityDefinitions:
+#  UserSecurity:
+#    type: apiKey
+#    in: header
+#    name: Authorization
+#    description: For write operations we need to provide a token like  ```Bearer {{TOKEN}}```
+#    security:
+#      - UserSecurity: []
+
+###############################################################################
+#                                  Paths
+###############################################################################
 paths:
   /widget:
     get:
       description: Returns all widgets
+      consumes:
+        - application/vnd.api+json
       produces:
+        - application/vnd.api+json
         - application/json
       tags:
         - Widget
@@ -31,11 +53,20 @@ paths:
         - name: app
           in: query
           description: Filter widgets on application (prep, gfw, etc..)
+          type: string
+        - name: sort
+          in: query
+          description: Sort filter (?sort=name)
+          type: string
       responses:
         200:
           description: Widgets obtained
           schema:
             $ref: '#/definitions/Widgets'
+        404:
+          description: Widget not found
+          schema:
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected error
           schema:
@@ -45,42 +76,13 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-    post:
-      summary: Create widget
-      description: Create widget
-      produces:
-        - application/json
-      tags:
-        - Widget
-      parameters:
-        - name: widget
-          in: body
-          description: Widget to save
-          required: true
-          schema:
-            $ref: '#/definitions/WidgetCreate'
-      responses:
-        200:
-          description: The object created
-          schema:
-            $ref: '#/definitions/Widget'
-        400:
-          description: Validate error
-          schema:
-            $ref: '#/definitions/Error'
-        500:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
   /widget/{id}:
     get:
       description: Returns widget based on a single UUID or slud, if the geostore not exist return 404
+      consumes:
+        - application/vnd.api+json
       produces:
+        - application/vnd.api+json
         - application/json
       tags:
         - Widget
@@ -108,13 +110,154 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-    put:
-      description: Update widget based on a single UUID or slug, if the geostore not exist return 404
+  /dataset/{dataset_id}/widget:
+    get:
+      description: Returns all widgets of specific dataset
+      consumes:
+        - application/vnd.api+json
       produces:
+        - application/vnd.api+json
         - application/json
       tags:
         - Widget
       parameters:
+        - name: dataset_id
+          in: path
+          description: UUID of dataset to update widget
+          required: true
+          type: string
+        - name: status
+          in: query
+          description: Filter widgets on status (pending, active, disabled, all)
+          type: string
+        - name: published
+          in: query
+          description: Filter widgets on published status (true, false)
+          type: string
+        - name: app
+          in: query
+          description: Filter widgets on application (prep, gfw, etc..)
+          type: string
+        - name: sort
+          in: query
+          description: Sort filter (?sort=name)
+          type: string
+      responses:
+        200:
+          description: Widgets obtained
+          schema:
+            $ref: '#/definitions/Widgets'
+        404:
+          description: Widget not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+    post:
+      summary: Create widget
+      description: Create widget
+      consumes:
+        - application/vnd.api+json
+      produces:
+        - application/vnd.api+json
+        - application/json
+      tags:
+        - Widget
+      parameters:
+        - name: dataset_id
+          in: path
+          description: UUID of dataset to update widget
+          required: true
+          type: string
+        - name: widget
+          in: body
+          description: Widget to save
+          required: true
+          schema:
+            $ref: '#/definitions/WidgetCreate'
+      responses:
+        200:
+          description: The object created
+          schema:
+            $ref: '#/definitions/Widget'
+        401:
+          description: Not authorized!
+          schema:
+            $ref: '#/definitions/Error'
+        422:
+          description: Unprocessable entity
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /dataset/{dataset_id}/widget/{id}:
+    get:
+      description: Returns widget based on a single UUID or slud for specific dataset, if the geostore not exist return 404
+      consumes:
+        - application/vnd.api+json
+      produces:
+        - application/vnd.api+json
+        - application/json
+      tags:
+        - Widget
+      parameters:
+        - name: dataset_id
+          in: path
+          description: UUID of dataset to update widget
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: UUID of widget to fetch or slug
+          required: true
+          type: string
+      responses:
+        200:
+          description: Widget obtained
+          schema:
+            $ref: '#/definitions/Widget'
+        404:
+          description: Widget not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+    put:
+      description: Update widget based on a single UUID or slug, if the geostore not exist return 404
+      consumes:
+        - application/vnd.api+json
+      produces:
+        - application/vnd.api+json
+        - application/json
+      tags:
+        - Widget
+      parameters:
+        - name: dataset_id
+          in: path
+          description: UUID of dataset to update widget
+          required: true
+          type: string
         - name: id
           in: path
           description: UUID of widget to update or slug
@@ -131,6 +274,58 @@ paths:
           description: Widget updated
           schema:
             $ref: '#/definitions/Widget'
+        401:
+          description: Not authorized!
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Widget not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+    patch:
+      description: Update widget based on a single UUID or slug, if the geostore not exist return 404
+      consumes:
+        - application/vnd.api+json
+      produces:
+        - application/vnd.api+json
+        - application/json
+      tags:
+        - Widget
+      parameters:
+        - name: dataset_id
+          in: path
+          description: UUID of dataset to update widget
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: UUID of widget to update or slug
+          required: true
+          type: string
+        - name: widget
+          in: body
+          description: New data of the widget
+          required: true
+          schema:
+            $ref: '#/definitions/WidgetCreate'
+      responses:
+        200:
+          description: Widget updated
+          schema:
+            $ref: '#/definitions/Widget'
+        401:
+          description: Not authorized!
+          schema:
+            $ref: '#/definitions/Error'
         404:
           description: Widget not found
           schema:
@@ -146,11 +341,19 @@ paths:
 
     delete:
       description: Delete widget based on a single UUID or slug, if the geostore not exist return 404
+      consumes:
+        - application/vnd.api+json
       produces:
+        - application/vnd.api+json
         - application/json
       tags:
         - Widget
       parameters:
+        - name: dataset_id
+          in: path
+          description: UUID of dataset to update widget
+          required: true
+          type: string
         - name: id
           in: path
           description: UUID of widget to delete or slug
@@ -161,8 +364,47 @@ paths:
           description: Widget updated
           schema:
             $ref: '#/definitions/Message'
+        401:
+          description: Not authorized!
+          schema:
+            $ref: '#/definitions/Error'
         404:
           description: Widget not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /widget/find-by-ids:
+    post:
+      description: Returns all widgets for specific datasets
+      consumes:
+        - application/vnd.api+json
+      produces:
+        - application/vnd.api+json
+        - application/json
+      tags:
+        - Widget
+      parameters:
+        - name: widget
+          in: body
+          description: Ids of datasets
+          required: true
+          schema:
+            $ref: '#/definitions/Ids'
+      responses:
+        200:
+          description: Widgets obtained
+          schema:
+            $ref: '#/definitions/Widgets'
+        401:
+          description: Not authorized!
           schema:
             $ref: '#/definitions/Error'
         500:
@@ -224,67 +466,21 @@ definitions:
         type: string
         format: UUID
         description: UUID required for layer update
-      name:
-        type: string
-        description: Name of the layer
-      provider:
-        type: integer
-        description: Provider (0 for CartoDB)
-      status:
-        type: integer
-        description: Status (pending - 0 (default), saved - 1 (visible if status 1 and published true), failed - 2,  deleted -3)
-      published:
-        type: boolean
-        description: Published status (true - false, visible if status 1 and published true)
-      color:
-        type: string
-        description: Color
-      z_index:
-        type: integer
-        description: zIndex
-      settings:
-        type: object
-        description: Settings - config JSON for widget
-
-  Widgets:
-    type: array
-    items:
-      $ref: '#/definitions/WidgetArray'
-
-  WidgetArray:
-    type: object
-    properties:
-      id:
-        type: string
-        format: UUID
-        description: Widget id
       slug:
         type: string
         description: Slug of the widget
-      name:
+      userId:
         type: string
-        description: Name of the widget
-      status:
-        type: string
-        description: status
-      published:
-        type: boolean
-        description: Published status
-
-  Widget:
-    type: object
-    properties:
-      id:
-        type: string
-        format: UUID
-        description: Widget id
-      slug:
-        type: string
-        description: Slug of the widget
+        description: Id of user
+      application:
+        type: array
+        description: Available for defined applications
+        items:
+          type: string
       source:
         type: string
         description: Source
-      source_url:
+      sourceUrl:
         type: string
         description: Url
       name:
@@ -296,18 +492,126 @@ definitions:
       authors:
         type: string
         description: Authors
-      query_url:
+      queryUrl:
         type: string
         description: Url for data
-      widget_config:
+      widgetConfig:
         type: object
         description: Chart input
-      layers:
-        type: array
-        items:
-          $ref: '#/definitions/LayersAttributes'
+      template:
+        type: boolean
+        description: Widget is a template (true, false)
+      dataset:
+        type: string
+        description: Uuid of dataset
+      default:
+        type: boolean
+        description: Is a default widget for configurated dataset
+      layerId:
+        type: string
+        description: Uuid of layer
+      status:
+        type: string
+        description: Status of widget (pending, saved, failed, deleted)
+      published:
+        type: boolean
+        description: Publish unpublish widget
+      verified:
+        type: boolean
+        description: Is the widget verified?
+
+  Widgets:
+    type: array
+    items:
+      $ref: '#/definitions/Widget'
+
+  Widget:
+    type: object
+    properties:
+      id:
+        type: string
+        format: UUID
+        description: Widget id
+      type:
+        type: string
+        description: widget
+      links:
+        type: object
+        properties:
+          self:
+            type: string
+            description: Pagination links
+          first:
+            type: string
+            description: Pagination links
+          prev:
+            type: string
+            description: Pagination links
+          next:
+            type: string
+            description: Pagination links
+          last:
+            type: string
+            description: Pagination links
+      attributes:
+        type: object
+        properties:
+          slug:
+            type: string
+            description: Slug of the widget
+          userId:
+            type: string
+            description: Id of user
+          application:
+            type: array
+            description: Available for defined applications
+            items:
+              type: string
+          source:
+            type: string
+            description: Source
+          sourceUrl:
+            type: string
+            description: Url
+          name:
+            type: string
+            description: Name of the widget
+          description:
+            type: string
+            description: Description
+          authors:
+            type: string
+            description: Authors
+          queryUrl:
+            type: string
+            description: Url for data
+          widgetConfig:
+            type: object
+            description: Chart input
+          template:
+            type: boolean
+            description: Widget is a template (true, false)
+          dataset:
+            type: string
+            description: Uuid of dataset
+          default:
+            type: boolean
+            description: Is a default widget for configurated dataset
+          layerId:
+            type: string
+            description: Uuid of layer
+          status:
+            type: string
+            description: Status of widget (pending, saved, failed, deleted)
+          published:
+            type: boolean
+            description: Publish unpublish widget
+          verified:
+            type: boolean
+            description: Is the widget verified?
       meta:
         type: object
+        description: Available only for specific widget not on the list endpoint
         properties:
           published:
             type: boolean
@@ -321,6 +625,16 @@ definitions:
           created_at:
             type: string
             description: Date
+
+  Ids:
+    type: object
+    description: Array of dataset ids
+    properties:
+      ids:
+        type: array
+        description: array of dataset ids
+        items:
+          type: string
 
   Message:
     type: object
