@@ -132,945 +132,884 @@
     "swagger": {
       "swagger": "2.0",
       "info": {
-          "title": "RW Widget API",
-          "description": "Resource Watch - Widget API",
-          "version": "1.0.0"
+        "title": "RW Widget API",
+        "description": "Resource Watch - Widget API",
+        "version": "1.0.0"
       },
       "host": "staging-api.globalforestwatch.org",
       "schemes": [
-          "https",
-          "http"
+        "https",
+        "http"
       ],
       "consumes": [
-          "application/vnd.api+json"
+        "application/vnd.api+json"
       ],
       "produces": [
-          "application/vnd.api+json"
+        "application/vnd.api+json"
       ],
       "paths": {
-          "/widget": {
-              "get": {
-                  "description": "Returns all widgets",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "status",
-                          "in": "query",
-                          "description": "Filter widgets on status (pending, active, disabled, all)",
-                          "type": "string"
-                      },
-                      {
-                          "name": "published",
-                          "in": "query",
-                          "description": "Filter widgets on published status (true, false)",
-                          "type": "string"
-                      },
-                      {
-                          "name": "app",
-                          "in": "query",
-                          "description": "Filter widgets on application (prep, gfw, etc..)",
-                          "type": "string"
-                      },
-                      {
-                          "name": "sort",
-                          "in": "query",
-                          "description": "Sort filter (?sort=name)",
-                          "type": "string"
-                      },
-                      {
-                          "name": "name",
-                          "in": "query",
-                          "description": "Filter the widgets whose name contains the filter text",
-                          "type": "string"
-                      },
-                      {
-                          "name": "verified",
-                          "in": "query",
-                          "description": "Filter by verified status (true,false)",
-                          "type": "boolean"
-                      },
-                      {
-                          "name": "template",
-                          "in": "query",
-                          "description": "Filter by template status (true,false)",
-                          "type": "boolean"
-                      },
-                      {
-                          "name": "dataset",
-                          "in": "query",
-                          "description": "Filter the widgets by dataset uuid",
-                          "type": "string"
-                      },
-                      {
-                          "name": "default",
-                          "in": "query",
-                          "description": "Filter by default status (true,false)",
-                          "type": "boolean"
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "Widgets obtained",
-                          "schema": {
-                              "$ref": "#/definitions/Widgets"
-                          }
-                      },
-                      "404": {
-                          "description": "Widget not found",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
-              }
-          },
-          "/widget/{id}": {
-              "get": {
-                  "description": "Returns widget based on a single UUID or slud, if the geostore not exist return 404",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "id",
-                          "in": "path",
-                          "description": "UUID of widget to fetch or slug",
-                          "required": true,
-                          "type": "string"
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "Widget obtained",
-                          "schema": {
-                              "$ref": "#/definitions/Widget"
-                          }
-                      },
-                      "404": {
-                          "description": "Widget not found",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
-              }
-          },
-          "/dataset/{dataset_id}/widget": {
-              "get": {
-                  "description": "Returns all widgets of specific dataset",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "dataset_id",
-                          "in": "path",
-                          "description": "UUID of dataset to update widget",
-                          "required": true,
-                          "type": "string"
-                      },
-                      {
-                          "name": "status",
-                          "in": "query",
-                          "description": "Filter widgets on status (pending, active, disabled, all)",
-                          "type": "string"
-                      },
-                      {
-                          "name": "published",
-                          "in": "query",
-                          "description": "Filter widgets on published status (true, false)",
-                          "type": "string"
-                      },
-                      {
-                          "name": "app",
-                          "in": "query",
-                          "description": "Filter widgets on application (prep, gfw, etc..)",
-                          "type": "string"
-                      },
-                      {
-                          "name": "sort",
-                          "in": "query",
-                          "description": "Sort filter (?sort=name)",
-                          "type": "string"
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "Widgets obtained",
-                          "schema": {
-                              "$ref": "#/definitions/Widgets"
-                          }
-                      },
-                      "404": {
-                          "description": "Widget not found",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
+        "/widget": {
+          "get": {
+            "description": "Returns all widgets",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "description": "Filter widgets on status (pending, active, disabled, all)",
+                "type": "string"
               },
-              "post": {
-                  "summary": "Create widget",
-                  "description": "Create widget",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "dataset_id",
-                          "in": "path",
-                          "description": "UUID of dataset to update widget",
-                          "required": true,
-                          "type": "string"
-                      },
-                      {
-                          "name": "widget",
-                          "in": "body",
-                          "description": "Widget to save",
-                          "required": true,
-                          "schema": {
-                              "$ref": "#/definitions/WidgetCreate"
-                          }
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "The object created",
-                          "schema": {
-                              "$ref": "#/definitions/Widget"
-                          }
-                      },
-                      "401": {
-                          "description": "Not authorized!",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "422": {
-                          "description": "Unprocessable entity",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
-              }
-          },
-          "/dataset/{dataset_id}/widget/{id}": {
-              "get": {
-                  "description": "Returns widget based on a single UUID or slud for specific dataset, if the geostore not exist return 404",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "dataset_id",
-                          "in": "path",
-                          "description": "UUID of dataset to update widget",
-                          "required": true,
-                          "type": "string"
-                      },
-                      {
-                          "name": "id",
-                          "in": "path",
-                          "description": "UUID of widget to fetch or slug",
-                          "required": true,
-                          "type": "string"
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "Widget obtained",
-                          "schema": {
-                              "$ref": "#/definitions/Widget"
-                          }
-                      },
-                      "404": {
-                          "description": "Widget not found",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
+              {
+                "name": "published",
+                "in": "query",
+                "description": "Filter widgets on published status (true, false)",
+                "type": "string"
               },
-              "put": {
-                  "description": "Update widget based on a single UUID or slug, if the geostore not exist return 404",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "dataset_id",
-                          "in": "path",
-                          "description": "UUID of dataset to update widget",
-                          "required": true,
-                          "type": "string"
-                      },
-                      {
-                          "name": "id",
-                          "in": "path",
-                          "description": "UUID of widget to update or slug",
-                          "required": true,
-                          "type": "string"
-                      },
-                      {
-                          "name": "widget",
-                          "in": "body",
-                          "description": "New data of the widget",
-                          "required": true,
-                          "schema": {
-                              "$ref": "#/definitions/WidgetCreate"
-                          }
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "Widget updated",
-                          "schema": {
-                              "$ref": "#/definitions/Widget"
-                          }
-                      },
-                      "401": {
-                          "description": "Not authorized!",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "404": {
-                          "description": "Widget not found",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
+              {
+                "name": "app",
+                "in": "query",
+                "description": "Filter widgets on application (prep, gfw, etc..)",
+                "type": "string"
               },
-              "patch": {
-                  "description": "Update widget based on a single UUID or slug, if the geostore not exist return 404",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "dataset_id",
-                          "in": "path",
-                          "description": "UUID of dataset to update widget",
-                          "required": true,
-                          "type": "string"
-                      },
-                      {
-                          "name": "id",
-                          "in": "path",
-                          "description": "UUID of widget to update or slug",
-                          "required": true,
-                          "type": "string"
-                      },
-                      {
-                          "name": "widget",
-                          "in": "body",
-                          "description": "New data of the widget",
-                          "required": true,
-                          "schema": {
-                              "$ref": "#/definitions/WidgetCreate"
-                          }
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "Widget updated",
-                          "schema": {
-                              "$ref": "#/definitions/Widget"
-                          }
-                      },
-                      "401": {
-                          "description": "Not authorized!",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "404": {
-                          "description": "Widget not found",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
+              {
+                "name": "sort",
+                "in": "query",
+                "description": "Sort filter (?sort=name)",
+                "type": "string"
               },
-              "delete": {
-                  "description": "Delete widget based on a single UUID or slug, if the geostore not exist return 404",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "dataset_id",
-                          "in": "path",
-                          "description": "UUID of dataset to update widget",
-                          "required": true,
-                          "type": "string"
-                      },
-                      {
-                          "name": "id",
-                          "in": "path",
-                          "description": "UUID of widget to delete or slug",
-                          "required": true,
-                          "type": "string"
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "Widget updated",
-                          "schema": {
-                              "$ref": "#/definitions/Message"
-                          }
-                      },
-                      "401": {
-                          "description": "Not authorized!",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "404": {
-                          "description": "Widget not found",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
+              {
+                "name": "name",
+                "in": "query",
+                "description": "Filter the widgets whose name contains the filter text",
+                "type": "string"
+              },
+              {
+                "name": "verified",
+                "in": "query",
+                "description": "Filter by verified status (true,false)",
+                "type": "boolean"
+              },
+              {
+                "name": "template",
+                "in": "query",
+                "description": "Filter by template status (true,false)",
+                "type": "boolean"
+              },
+              {
+                "name": "dataset",
+                "in": "query",
+                "description": "Filter the widgets by dataset uuid",
+                "type": "string"
+              },
+              {
+                "name": "default",
+                "in": "query",
+                "description": "Filter by default status (true,false)",
+                "type": "boolean"
               }
-          },
-          "/widget/find-by-ids": {
-              "post": {
-                  "description": "Returns all widgets for specific datasets",
-                  "consumes": [
-                      "application/vnd.api+json"
-                  ],
-                  "produces": [
-                      "application/vnd.api+json",
-                      "application/json"
-                  ],
-                  "tags": [
-                      "Widget"
-                  ],
-                  "parameters": [
-                      {
-                          "name": "widget",
-                          "in": "body",
-                          "description": "Ids of datasets",
-                          "required": true,
-                          "schema": {
-                              "$ref": "#/definitions/Ids"
-                          }
-                      }
-                  ],
-                  "responses": {
-                      "200": {
-                          "description": "Widgets obtained",
-                          "schema": {
-                              "$ref": "#/definitions/Widgets"
-                          }
-                      },
-                      "401": {
-                          "description": "Not authorized!",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "500": {
-                          "description": "Unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      },
-                      "default": {
-                          "description": "unexpected error",
-                          "schema": {
-                              "$ref": "#/definitions/Error"
-                          }
-                      }
-                  }
+            ],
+            "responses": {
+              "200": {
+                "description": "Widgets obtained",
+                "schema": {
+                  "$ref": "#/definitions/Widgets"
+                }
+              },
+              "404": {
+                "description": "Widget not found",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
               }
+            }
           }
+        },
+        "/widget/{id}": {
+          "get": {
+            "description": "Returns widget based on a single UUID or slud, if the geostore not exist return 404",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "UUID of widget to fetch or slug",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Widget obtained",
+                "schema": {
+                  "$ref": "#/definitions/Widget"
+                }
+              },
+              "404": {
+                "description": "Widget not found",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        },
+        "/dataset/{dataset_id}/widget": {
+          "get": {
+            "description": "Returns all widgets of specific dataset",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "dataset_id",
+                "in": "path",
+                "description": "UUID of dataset to update widget",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "status",
+                "in": "query",
+                "description": "Filter widgets on status (pending, active, disabled, all)",
+                "type": "string"
+              },
+              {
+                "name": "published",
+                "in": "query",
+                "description": "Filter widgets on published status (true, false)",
+                "type": "string"
+              },
+              {
+                "name": "app",
+                "in": "query",
+                "description": "Filter widgets on application (prep, gfw, etc..)",
+                "type": "string"
+              },
+              {
+                "name": "sort",
+                "in": "query",
+                "description": "Sort filter (?sort=name)",
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Widgets obtained",
+                "schema": {
+                  "$ref": "#/definitions/Widgets"
+                }
+              },
+              "404": {
+                "description": "Widget not found",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          },
+          "post": {
+            "summary": "Create widget",
+            "description": "Create widget",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "dataset_id",
+                "in": "path",
+                "description": "UUID of dataset to update widget",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "widget",
+                "in": "body",
+                "description": "Widget to save",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/WidgetCreate"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "The object created",
+                "schema": {
+                  "$ref": "#/definitions/Widget"
+                }
+              },
+              "401": {
+                "description": "Not authorized!",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "422": {
+                "description": "Unprocessable entity",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        },
+        "/dataset/{dataset_id}/widget/{id}": {
+          "get": {
+            "description": "Returns widget based on a single UUID or slud for specific dataset, if the geostore not exist return 404",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "dataset_id",
+                "in": "path",
+                "description": "UUID of dataset to update widget",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "id",
+                "in": "path",
+                "description": "UUID of widget to fetch or slug",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Widget obtained",
+                "schema": {
+                  "$ref": "#/definitions/Widget"
+                }
+              },
+              "404": {
+                "description": "Widget not found",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          },
+          "put": {
+            "description": "Update widget based on a single UUID or slug, if the geostore not exist return 404",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "dataset_id",
+                "in": "path",
+                "description": "UUID of dataset to update widget",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "id",
+                "in": "path",
+                "description": "UUID of widget to update or slug",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "widget",
+                "in": "body",
+                "description": "New data of the widget",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/WidgetCreate"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Widget updated",
+                "schema": {
+                  "$ref": "#/definitions/Widget"
+                }
+              },
+              "401": {
+                "description": "Not authorized!",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "404": {
+                "description": "Widget not found",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          },
+          "patch": {
+            "description": "Update widget based on a single UUID or slug, if the geostore not exist return 404",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "dataset_id",
+                "in": "path",
+                "description": "UUID of dataset to update widget",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "id",
+                "in": "path",
+                "description": "UUID of widget to update or slug",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "widget",
+                "in": "body",
+                "description": "New data of the widget",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/WidgetCreate"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Widget updated",
+                "schema": {
+                  "$ref": "#/definitions/Widget"
+                }
+              },
+              "401": {
+                "description": "Not authorized!",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "404": {
+                "description": "Widget not found",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          },
+          "delete": {
+            "description": "Delete widget based on a single UUID or slug, if the geostore not exist return 404",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "dataset_id",
+                "in": "path",
+                "description": "UUID of dataset to update widget",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "id",
+                "in": "path",
+                "description": "UUID of widget to delete or slug",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Widget updated",
+                "schema": {
+                  "$ref": "#/definitions/Message"
+                }
+              },
+              "401": {
+                "description": "Not authorized!",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "404": {
+                "description": "Widget not found",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        },
+        "/widget/find-by-ids": {
+          "post": {
+            "description": "Returns all widgets for specific datasets",
+            "consumes": [
+              "application/vnd.api+json"
+            ],
+            "produces": [
+              "application/vnd.api+json",
+              "application/json"
+            ],
+            "tags": [
+              "Widget"
+            ],
+            "parameters": [
+              {
+                "name": "widget",
+                "in": "body",
+                "description": "Ids of datasets",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/Ids"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Widgets obtained",
+                "schema": {
+                  "$ref": "#/definitions/Widgets"
+                }
+              },
+              "401": {
+                "description": "Not authorized!",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
       },
       "definitions": {
-          "WidgetCreate": {
+        "WidgetCreate": {
+          "type": "object",
+          "properties": {
+            "widget": {
               "type": "object",
               "properties": {
-                  "widget": {
-                      "type": "object",
-                      "properties": {
-                          "status": {
-                              "type": "integer",
-                              "description": "Status (pending - 0 (default), saved - 1 (visible if status 1 and published true), failed - 2,  deleted -3)"
-                          },
-                          "published": {
-                              "type": "boolean",
-                              "description": "Published status (true - false, visible if status 1 and published true)"
-                          },
-                          "source_url": {
-                              "type": "string",
-                              "description": "Source url"
-                          },
-                          "source": {
-                              "type": "string",
-                              "description": "Source"
-                          },
-                          "slug": {
-                              "type": "string",
-                              "description": "Slug"
-                          },
-                          "name": {
-                              "type": "string",
-                              "description": "Name"
-                          },
-                          "description": {
-                              "type": "string",
-                              "description": "Description"
-                          },
-                          "authors": {
-                              "type": "string",
-                              "description": "Authors"
-                          },
-                          "query_url": {
-                              "type": "string",
-                              "description": "Url for data"
-                          },
-                          "widget_config": {
-                              "type": "object",
-                              "description": "Chart input"
-                          },
-                          "layers_attributes": {
-                              "type": "array",
-                              "items": {
-                                  "$ref": "#/definitions/LayersAttributes"
-                              }
-                          }
-                      }
+                "slug": {
+                  "type": "string",
+                  "description": "Slug of the widget"
+                },
+                "application": {
+                  "type": "array",
+                  "description": "Available for defined applications",
+                  "items": {
+                    "type": "string"
                   }
+                },
+                "source": {
+                  "type": "string",
+                  "description": "Source"
+                },
+                "sourceUrl": {
+                  "type": "string",
+                  "description": "Url"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name of the widget"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description"
+                },
+                "authors": {
+                  "type": "string",
+                  "description": "Authors"
+                },
+                "queryUrl": {
+                  "type": "string",
+                  "description": "Url for data"
+                },
+                "widgetConfig": {
+                  "type": "object",
+                  "description": "Chart input"
+                },
+                "template": {
+                  "type": "boolean",
+                  "description": "Widget is a template (true, false)"
+                },
+                "dataset": {
+                  "type": "string",
+                  "description": "Uuid of dataset"
+                },
+                "default": {
+                  "type": "boolean",
+                  "description": "Is a default widget for configurated dataset"
+                },
+                "layerId": {
+                  "type": "string",
+                  "description": "Uuid of layer"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "Status of widget (pending, saved, failed, deleted)"
+                },
+                "published": {
+                  "type": "boolean",
+                  "description": "Publish unpublish widget"
+                },
+                "verified": {
+                  "type": "boolean",
+                  "description": "Is the widget verified?"
+                }
               }
-          },
-          "LayersAttributes": {
-              "type": "object",
-              "description": "Layer attributes",
-              "properties": {
-                  "id": {
-                      "type": "string",
-                      "format": "UUID",
-                      "description": "UUID required for layer update"
-                  },
-                  "slug": {
-                      "type": "string",
-                      "description": "Slug of the widget"
-                  },
-                  "userId": {
-                      "type": "string",
-                      "description": "Id of user"
-                  },
-                  "application": {
-                      "type": "array",
-                      "description": "Available for defined applications",
-                      "items": {
-                          "type": "string"
-                      }
-                  },
-                  "source": {
-                      "type": "string",
-                      "description": "Source"
-                  },
-                  "sourceUrl": {
-                      "type": "string",
-                      "description": "Url"
-                  },
-                  "name": {
-                      "type": "string",
-                      "description": "Name of the widget"
-                  },
-                  "description": {
-                      "type": "string",
-                      "description": "Description"
-                  },
-                  "authors": {
-                      "type": "string",
-                      "description": "Authors"
-                  },
-                  "queryUrl": {
-                      "type": "string",
-                      "description": "Url for data"
-                  },
-                  "widgetConfig": {
-                      "type": "object",
-                      "description": "Chart input"
-                  },
-                  "template": {
-                      "type": "boolean",
-                      "description": "Widget is a template (true, false)"
-                  },
-                  "dataset": {
-                      "type": "string",
-                      "description": "Uuid of dataset"
-                  },
-                  "default": {
-                      "type": "boolean",
-                      "description": "Is a default widget for configurated dataset"
-                  },
-                  "layerId": {
-                      "type": "string",
-                      "description": "Uuid of layer"
-                  },
-                  "status": {
-                      "type": "string",
-                      "description": "Status of widget (pending, saved, failed, deleted)"
-                  },
-                  "published": {
-                      "type": "boolean",
-                      "description": "Publish unpublish widget"
-                  },
-                  "verified": {
-                      "type": "boolean",
-                      "description": "Is the widget verified?"
-                  }
-              }
-          },
-          "Widgets": {
-              "type": "array",
-              "items": {
-                  "$ref": "#/definitions/Widget"
-              }
-          },
-          "Widget": {
-              "type": "object",
-              "properties": {
-                  "id": {
-                      "type": "string",
-                      "format": "UUID",
-                      "description": "Widget id"
-                  },
-                  "type": {
-                      "type": "string",
-                      "description": "widget"
-                  },
-                  "links": {
-                      "type": "object",
-                      "properties": {
-                          "self": {
-                              "type": "string",
-                              "description": "Pagination links"
-                          },
-                          "first": {
-                              "type": "string",
-                              "description": "Pagination links"
-                          },
-                          "prev": {
-                              "type": "string",
-                              "description": "Pagination links"
-                          },
-                          "next": {
-                              "type": "string",
-                              "description": "Pagination links"
-                          },
-                          "last": {
-                              "type": "string",
-                              "description": "Pagination links"
-                          }
-                      }
-                  },
-                  "attributes": {
-                      "type": "object",
-                      "properties": {
-                          "slug": {
-                              "type": "string",
-                              "description": "Slug of the widget"
-                          },
-                          "userId": {
-                              "type": "string",
-                              "description": "Id of user"
-                          },
-                          "application": {
-                              "type": "array",
-                              "description": "Available for defined applications",
-                              "items": {
-                                  "type": "string"
-                              }
-                          },
-                          "source": {
-                              "type": "string",
-                              "description": "Source"
-                          },
-                          "sourceUrl": {
-                              "type": "string",
-                              "description": "Url"
-                          },
-                          "name": {
-                              "type": "string",
-                              "description": "Name of the widget"
-                          },
-                          "description": {
-                              "type": "string",
-                              "description": "Description"
-                          },
-                          "authors": {
-                              "type": "string",
-                              "description": "Authors"
-                          },
-                          "queryUrl": {
-                              "type": "string",
-                              "description": "Url for data"
-                          },
-                          "widgetConfig": {
-                              "type": "object",
-                              "description": "Chart input"
-                          },
-                          "template": {
-                              "type": "boolean",
-                              "description": "Widget is a template (true, false)"
-                          },
-                          "dataset": {
-                              "type": "string",
-                              "description": "Uuid of dataset"
-                          },
-                          "default": {
-                              "type": "boolean",
-                              "description": "Is a default widget for configurated dataset"
-                          },
-                          "layerId": {
-                              "type": "string",
-                              "description": "Uuid of layer"
-                          },
-                          "status": {
-                              "type": "string",
-                              "description": "Status of widget (pending, saved, failed, deleted)"
-                          },
-                          "published": {
-                              "type": "boolean",
-                              "description": "Publish unpublish widget"
-                          },
-                          "verified": {
-                              "type": "boolean",
-                              "description": "Is the widget verified?"
-                          }
-                      }
-                  },
-                  "meta": {
-                      "type": "object",
-                      "description": "Available only for specific widget not on the list endpoint",
-                      "properties": {
-                          "published": {
-                              "type": "boolean",
-                              "description": "Published status"
-                          },
-                          "status": {
-                              "type": "string",
-                              "description": "Status"
-                          },
-                          "updated_at": {
-                              "type": "string",
-                              "description": "Date"
-                          },
-                          "created_at": {
-                              "type": "string",
-                              "description": "Date"
-                          }
-                      }
-                  }
-              }
-          },
-          "Ids": {
-              "type": "object",
-              "description": "Array of dataset ids",
-              "properties": {
-                  "ids": {
-                      "type": "array",
-                      "description": "array of dataset ids",
-                      "items": {
-                          "type": "string"
-                      }
-                  }
-              }
-          },
-          "Message": {
-              "type": "object",
-              "properties": {
-                  "status": {
-                      "type": "number"
-                  },
-                  "message": {
-                      "type": "string"
-                  }
-              }
-          },
-          "Error": {
-              "type": "object",
-              "properties": {
-                  "status": {
-                      "type": "string",
-                      "description": "The HTTP status code applicable to this problem, expressed as a string value"
-                  },
-                  "error": {
-                      "type": "string",
-                      "description": "An application-specific error code, expressed as a string value"
-                  },
-                  "exception": {
-                      "type": "string",
-                      "description": "A short, human-readable summary of the problem that SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization."
-                  },
-                  "traces": {
-                      "type": "string",
-                      "description": "A human-readable explanation specific to this occurrence of the problem. Like name, this field's value can be localized"
-                  }
-              }
+            }
           }
+        },
+        "Widgets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Widget"
+          }
+        },
+        "Widget": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "UUID",
+              "description": "Widget id"
+            },
+            "type": {
+              "type": "string",
+              "description": "widget"
+            },
+            "links": {
+              "type": "object",
+              "properties": {
+                "self": {
+                  "type": "string",
+                  "description": "Pagination links"
+                },
+                "first": {
+                  "type": "string",
+                  "description": "Pagination links"
+                },
+                "prev": {
+                  "type": "string",
+                  "description": "Pagination links"
+                },
+                "next": {
+                  "type": "string",
+                  "description": "Pagination links"
+                },
+                "last": {
+                  "type": "string",
+                  "description": "Pagination links"
+                }
+              }
+            },
+            "attributes": {
+              "type": "object",
+              "properties": {
+                "slug": {
+                  "type": "string",
+                  "description": "Slug of the widget"
+                },
+                "userId": {
+                  "type": "string",
+                  "description": "Id of user"
+                },
+                "application": {
+                  "type": "array",
+                  "description": "Available for defined applications",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "source": {
+                  "type": "string",
+                  "description": "Source"
+                },
+                "sourceUrl": {
+                  "type": "string",
+                  "description": "Url"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name of the widget"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description"
+                },
+                "authors": {
+                  "type": "string",
+                  "description": "Authors"
+                },
+                "queryUrl": {
+                  "type": "string",
+                  "description": "Url for data"
+                },
+                "widgetConfig": {
+                  "type": "object",
+                  "description": "Chart input"
+                },
+                "template": {
+                  "type": "boolean",
+                  "description": "Widget is a template (true, false)"
+                },
+                "dataset": {
+                  "type": "string",
+                  "description": "Uuid of dataset"
+                },
+                "default": {
+                  "type": "boolean",
+                  "description": "Is a default widget for configurated dataset"
+                },
+                "layerId": {
+                  "type": "string",
+                  "description": "Uuid of layer"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "Status of widget (pending, saved, failed, deleted)"
+                },
+                "published": {
+                  "type": "boolean",
+                  "description": "Publish unpublish widget"
+                },
+                "verified": {
+                  "type": "boolean",
+                  "description": "Is the widget verified?"
+                }
+              }
+            },
+            "meta": {
+              "type": "object",
+              "description": "Available only for specific widget not on the list endpoint",
+              "properties": {
+                "published": {
+                  "type": "boolean",
+                  "description": "Published status"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "Status"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "description": "Date"
+                },
+                "created_at": {
+                  "type": "string",
+                  "description": "Date"
+                }
+              }
+            }
+          }
+        },
+        "Ids": {
+          "type": "object",
+          "description": "Array of dataset ids",
+          "properties": {
+            "ids": {
+              "type": "array",
+              "description": "array of dataset ids",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "Message": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "number"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "Error": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "description": "The HTTP status code applicable to this problem, expressed as a string value"
+            },
+            "error": {
+              "type": "string",
+              "description": "An application-specific error code, expressed as a string value"
+            },
+            "exception": {
+              "type": "string",
+              "description": "A short, human-readable summary of the problem that SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization."
+            },
+            "traces": {
+              "type": "string",
+              "description": "A human-readable explanation specific to this occurrence of the problem. Like name, this field's value can be localized"
+            }
+          }
+        }
       }
     }
 }
