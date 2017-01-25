@@ -10,7 +10,7 @@ module V1
                       }}}}
 
       let!(:params) {{ "loggedUser": {"role": "manager", "extraUserData": { "apps": ["gfw","prep"] }, "id": "3242-32442-432"},
-                       "widget": { "name": "First test widget", "application": ["gfw"], "datasetId": "c867138c-eccf-4e57-8aa2-b62b87800ddf" }}}
+                       "widget": { "name": "First test widget", "application": ["gfw"], "datasetId": "c867138c-eccf-4e57-8aa2-b62b87800ddf", "widgetConfig": {"testKey": "test", "test_key_2": "test"} }}}
 
       let!(:params_faild) {{ "loggedUser": {"role": "manager", "extraUserData": { "apps": ["gfw","prep"] }, "id": "3242-32442-432"},
                               "widget": { "name": "Widget second one", "application": ["gfw"] }}}
@@ -93,8 +93,9 @@ module V1
         post '/widget', params: params
 
         expect(status).to eq(201)
-        expect(json['id']).to                 be_present
-        expect(json['attributes']['slug']).to eq('first-test-widget')
+        expect(json['id']).to                         be_present
+        expect(json['attributes']['slug']).to         eq('first-test-widget')
+        expect(json['attributes']['widgetConfig']).to eq({"testKey"=>"test", "test_key_2"=>"test"})
       end
 
       it 'Name and slug validation' do
