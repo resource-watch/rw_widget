@@ -89,7 +89,7 @@
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/dataset/:dataset_id/widget/widget"
+            "path": "/dataset/:dataset_id/widget"
         }]
       },
       {
@@ -98,7 +98,7 @@
         "endpoints": [{
             "method": "PUT",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/dataset/:dataset_id/widget/widget/:id"
+            "path": "/dataset/:dataset_id/widget/:id"
         }]
       },
       {
@@ -107,7 +107,7 @@
         "endpoints": [{
             "method": "PATCH",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/dataset/:dataset_id/widget/widget/:id"
+            "path": "/dataset/:dataset_id/widget/:id"
         }]
       },
       {
@@ -116,7 +116,7 @@
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://192.168.99.100:3020",
-            "path": "/dataset/:dataset_id/widget/widget/:id"
+            "path": "/dataset/:dataset_id/widget/:id"
         }]
       }
     ],
