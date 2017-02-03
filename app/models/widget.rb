@@ -58,9 +58,10 @@ class Widget < ApplicationRecord
   scope :notfilter_default,  -> { where(default: false)         }
   scope :filter_actives,     -> { filter_saved.filter_published }
 
-  scope :filter_app,      ->(app)     { where('widgets.application ?| array[:keys]', keys: app) }
-  scope :filter_dataset,  ->(dataset) { where(dataset_id: dataset)                              }
-  scope :filter_name,     ->(name)    { where('LOWER(widgets.name) LIKE LOWER(?)', "%#{name}%") }
+  scope :filter_apps,      ->(app)     { where('application ?| array[:keys]', keys: app)         }
+  scope :filter_apps_and,  ->(app)     { where('application ?& array[:keys]', keys: app)         }
+  scope :filter_dataset,   ->(dataset) { where(dataset_id: dataset)                              }
+  scope :filter_name,      ->(name)    { where('LOWER(widgets.name) LIKE LOWER(?)', "%#{name}%") }
 
   def status_txt
     STATUS[status - 0]
@@ -125,10 +126,17 @@ class Widget < ApplicationRecord
     end
 
     def app_filter(scope, apps)
-      apps    = apps.is_a?(Array) ? apps : apps.split(',')
       widgets = scope
       widgets = if apps.present? && !apps.include?('all')
-                  widgets.filter_app(apps)
+                  if apps.include?(',')
+                     app = apps.split(',')
+                     widgets.filter_apps(app)
+                   elsif apps.include?('@')
+                     app = apps.split('@')
+                     widgets.filter_apps_and(app)
+                   else
+                     widgets.filter_apps(apps)
+                   end
                 else
                   widgets
                 end
