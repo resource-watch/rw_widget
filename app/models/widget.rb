@@ -1,3 +1,4 @@
+# coding: utf-8
 # frozen_string_literal: true
 # == Schema Information
 #
@@ -63,13 +64,13 @@ class Widget < ApplicationRecord
   scope :filter_dataset,   ->(dataset) { where(dataset_id: dataset)                              }
   scope :filter_name,      ->(name)    { where('LOWER(widgets.name) LIKE LOWER(?)', "%#{name}%") }
 
-  def status_txt
-    STATUS[status - 0]
-  end
+  # def status_txt
+  #   STATUS[status - 0]
+  # end
 
-  def deleted?
-    status_txt == 'deleted'
-  end
+  # def deleted?
+  #   status_txt == 'deleted'
+  # end
 
   class << self
     def set_by_id_or_slug(param)
@@ -78,7 +79,7 @@ class Widget < ApplicationRecord
     end
 
     def fetch_all(options)
-      status       = options['status'].downcase if options['status'].present?
+      #status       = options['status'].downcase if options['status'].present?
       published    = options['published']       if options['published'].present?
       verified     = options['verified']        if options['verified'].present?
       apps         = options['app'].downcase    if options['app'].present?
@@ -89,17 +90,7 @@ class Widget < ApplicationRecord
 
       widgets = all
       widgets = widgets.filter_dataset(dataset) if dataset.present?
-
-      widgets = case status
-                when 'pending'  then widgets.filter_pending
-                when 'active'   then widgets.filter_actives
-                when 'failed'   then widgets.filter_failed
-                when 'disabled' then widgets.filter_inactives
-                when 'all'      then widgets
-                else
-                  published.present? || verified.present? ? widgets : widgets.filter_actives
-                end
-
+      
       widgets = widgets.filter_published   if published.present? && published.include?('true')
       widgets = widgets.filter_unpublished if published.present? && published.include?('false')
       widgets = widgets.filter_verified    if verified.present?  && verified.include?('true')

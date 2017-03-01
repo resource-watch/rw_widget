@@ -18,8 +18,7 @@ module V1
     end
 
     def show
-      render json: @widget, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
-                                                                  published: @widget.try(:published),
+      render json: @widget, serializer: WidgetSerializer, meta: { published: @widget.try(:published),
                                                                   verified: @widget.try(:verified),
                                                                   updated_at: @widget.try(:updated_at),
                                                                   created_at: @widget.try(:created_at) }
@@ -29,8 +28,7 @@ module V1
       begin
         if @authorized.present?
           if @widget.update(@widget_params)
-            render json: @widget, status: 200, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
-                                                                                     published: @widget.try(:published),
+            render json: @widget, status: 200, serializer: WidgetSerializer, meta: { published: @widget.try(:published),
                                                                                      verified: @widget.try(:verified),
                                                                                      updated_at: @widget.try(:updated_at),
                                                                                      created_at: @widget.try(:created_at) }
@@ -51,8 +49,7 @@ module V1
         if authorized.present?
           @widget = Widget.new(widget_params.except(:logged_user))
           if @widget.save
-            render json: @widget, status: 201, serializer: WidgetSerializer, meta: { status: @widget.try(:status_txt),
-                                                                                     published: @widget.try(:published),
+            render json: @widget, status: 201, serializer: WidgetSerializer, meta: { published: @widget.try(:published),
                                                                                      verified: @widget.try(:verified),
                                                                                      updated_at: @widget.try(:updated_at),
                                                                                      created_at: @widget.try(:created_at) }

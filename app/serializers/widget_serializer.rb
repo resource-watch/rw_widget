@@ -27,11 +27,7 @@
 
 class WidgetSerializer < ActiveModel::Serializer
   attributes :id, :userId, :application, :slug, :name, :description, :source, :sourceUrl, :layerId, :dataset, :authors, :queryUrl, :widgetConfig, :template, :default,
-             :status, :published, :verified
-
-  def status
-    object.try(:status_txt)
-  end
+             :published, :verified
 
   def sourceUrl
     object.try(:source_url)
