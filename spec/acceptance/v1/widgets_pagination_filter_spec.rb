@@ -48,31 +48,10 @@ module V1
       }
 
       it 'Show list of all widgets' do
-        get '/widget?status=all'
+        get '/widget'
 
         expect(status).to    eq(200)
         expect(json.size).to eq(6)
-      end
-
-      it 'Show list of widgets with pending status' do
-        get '/widget?status=pending'
-
-        expect(status).to    eq(200)
-        expect(json.size).to eq(1)
-      end
-
-      it 'Show list of widgets with active status' do
-        get '/widget?status=active'
-
-        expect(status).to    eq(200)
-        expect(json.size).to eq(3)
-      end
-
-      it 'Show list of widgets with disabled status' do
-        get '/widget?status=disabled'
-
-        expect(status).to    eq(200)
-        expect(json.size).to eq(1)
       end
 
       it 'Show list of widgets with published status true' do
@@ -108,7 +87,7 @@ module V1
       end
 
       it 'Show list of widgets for app GFW' do
-        get '/widget?app=GFw'
+        get '/widget?app=GFW'
 
         expect(status).to eq(200)
         expect(json.size).to eq(2)
